@@ -249,11 +249,19 @@ section { position: relative; }
 .ph-photo {
   position: relative; overflow: hidden; border-radius: var(--radius-m);
   background: linear-gradient(155deg, #2b1f2c 0%, #3a1f24 45%, #150f16 100%);
-  aspect-ratio: var(--ar, 4/5);
+  aspect-ratio: 4/5;
   display: flex; align-items: center; justify-content: center;
 }
 .ph-photo.v2 { background: linear-gradient(155deg, #241b26 0%, #4a2a20 55%, #150f16 100%); }
 .ph-photo.v3 { background: linear-gradient(200deg, #2c1a1f 0%, #2a2130 60%, #150f16 100%); }
+/* variante de proporție (înlocuiesc fosta variabilă inline --ar) */
+.ph-photo.ar-3-4 { aspect-ratio: 3/4; }
+.ph-photo.ar-4-5 { aspect-ratio: 4/5; }
+.ph-photo.ar-4-3 { aspect-ratio: 4/3; }
+.ph-photo.ar-16-10 { aspect-ratio: 16/10; }
+.ph-photo.ar-16-11 { aspect-ratio: 16/11; }
+/* fotografia orizontală din cardul-exemplu (calendar/audiții) */
+.ph-photo.card-example__photo { aspect-ratio: auto; width: 220px; flex: none; border-radius: 0; }
 .ph-photo::before { /* grăunte / textură discretă — doar pe placeholder, nu pe fotografii reale */
   content: ''; position: absolute; inset: 0; opacity: .35; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
@@ -266,6 +274,9 @@ section { position: relative; }
 .ph-photo--filled img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ph-photo__mark { position: relative; z-index: 1; text-align: center; color: var(--on-ink-dim); }
 .ph-photo__mark .ring-decor { position: static; display: block; width: 46px; height: 46px; margin: 0 auto 14px; opacity: .55; color: var(--on-ink-dim); }
+.ph-photo__mark .ring-decor--44 { width: 44px; height: 44px; margin: 0 auto 12px; opacity: .55; }
+.ph-photo__mark .ring-decor--40 { width: 40px; height: 40px; margin: 0 auto 12px; opacity: .5; }
+.ph-photo__mark .ring-decor--38 { width: 38px; height: 38px; margin: 0 auto 12px; opacity: .5; }
 .ph-photo__label { font-family: var(--f-label); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
 .ph-photo__sub { font-size: .64rem; opacity: .7; margin-top: 4px; }
 
@@ -291,6 +302,7 @@ section { position: relative; }
   transition: transform .35s var(--ease);
 }
 .card:hover { transform: translateY(-6px); }
+.card--horizontal { flex-direction: row; align-items: stretch; }
 .card__body { padding: 22px 4px 4px; }
 .card__meta { font-family: var(--f-label); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
 .theme-ink .card__meta { color: var(--gold); }
@@ -431,6 +443,68 @@ section { position: relative; }
 .max-w-prose.mx-auto { margin-inline: auto; }
 .relative { position: relative; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* -- utilitare adăugate la curățenia de stiluri inline (2026) --------------
+   Fiecare clasă de mai jos înlocuiește un stil inline care apărea în una
+   sau mai multe pagini HTML. Scop: o singură schimbare aici se reflectă
+   automat pe tot site-ul, în loc să fie nevoie de editat fiecare fișier. */
+
+/* aliniere flex */
+.justify-center { justify-content: center; }
+.items-start { align-items: start; }
+.flex-1 { flex: 1; }
+
+/* spațiere — margin-top */
+.mt-10 { margin-top: 10px; } .mt-14 { margin-top: 14px; } .mt-16 { margin-top: 16px; }
+.mt-18 { margin-top: 18px; } .mt-20 { margin-top: 20px; } .mt-22 { margin-top: 22px; }
+.mt-24 { margin-top: 24px; } .mt-26 { margin-top: 26px; } .mt-28 { margin-top: 28px; }
+.mt-32 { margin-top: 32px; } .mt-34 { margin-top: 34px; } .mt-36 { margin-top: 36px; }
+.mt-40 { margin-top: 40px; }
+
+/* spațiere — margin-bottom */
+.mb-0 { margin-bottom: 0; } .mb-8 { margin-bottom: 8px; } .mb-10 { margin-bottom: 10px; }
+.mb-14 { margin-bottom: 14px; } .mb-16 { margin-bottom: 16px; } .mb-18 { margin-bottom: 18px; }
+.mb-20 { margin-bottom: 20px; } .mb-22 { margin-bottom: 22px; } .mb-24 { margin-bottom: 24px; }
+.mb-26 { margin-bottom: 26px; } .mb-32 { margin-bottom: 32px; } .mb-36 { margin-bottom: 36px; }
+.mb-44 { margin-bottom: 44px; } .mb-48 { margin-bottom: 48px; }
+
+/* spațiere — padding */
+.pt-0 { padding-top: 0; } .pt-48 { padding-top: 48px; } .pb-0 { padding-bottom: 0; }
+.pb-48 { padding-bottom: 48px; }
+.py-10 { padding-block: 10px; } .py-26 { padding-block: 26px; } .py-30 { padding-block: 30px; }
+.px-20 { padding-inline: 20px; } .px-30 { padding-inline: 30px; } .px-34 { padding-inline: 34px; }
+
+/* spațiere — gap */
+.gap-16 { gap: 16px; } .gap-24 { gap: 24px; } .gap-56 { gap: 56px; } .gap-64 { gap: 64px; }
+
+/* opacitate */
+.opacity-50 { opacity: .5; } .opacity-75 { opacity: .75; } .opacity-85 { opacity: .85; }
+.opacity-90 { opacity: .9; }
+
+/* text */
+.underline { text-decoration: underline; }
+.italic { font-style: italic; }
+.font-display { font-family: var(--f-display); }
+.text-red { color: var(--red); }
+.fs-11 { font-size: 1.1rem; } .fs-78 { font-size: .78rem; } .fs-86 { font-size: .86rem; }
+.fs-92 { font-size: .92rem; } .fs-98 { font-size: .98rem; } .fs-115 { font-size: 1.15rem; }
+.fs-2r { font-size: 2rem; }
+.max-16ch { max-width: 16ch; } .max-20ch { max-width: 20ch; }
+.max-30ch { max-width: 30ch; } .max-34ch { max-width: 34ch; }
+
+/* subtitlu de pagină italic, atenuat (folosit sub h1) */
+.page-subtitle { opacity: .6; font-style: italic; font-weight: 400; }
+
+/* bordură temă-dependentă, pentru carduri/rânduri pe fundal ink sau paper */
+.border-ink-line { border: 1px solid var(--ink-line); }
+.border-paper-line { border: 1px solid var(--paper-line); }
+.border-bottom-ink { border-bottom: 1px solid var(--ink-line); }
+
+/* coloană care ocupă tot lățimea unui grid */
+.col-span-all { grid-column: 1/-1; }
+
+/* embed hartă (Google Maps) în containerul .ph-photo/.map-embed-wrap */
+.map-embed { width: 100%; height: 100%; border: 0; position: relative; z-index: 2; }
 
 /* 7) RESPONSIVE — navigație mobilă ------------------------------------------ */
 @media (max-width: 940px) {

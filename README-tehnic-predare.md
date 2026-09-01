@@ -45,6 +45,15 @@ Nu există CSS separat per pagină — tot ce ține de design e în `assets/css/
 
 Tot ce ține de logo, meniu sau footer se editează **o singură dată**, în `assets/js/partials.js` — nu mai există 14 fișiere de umblat pentru o schimbare de genul ăsta. Vedeți comentariul din capul fișierului `partials.js` pentru ce anume se schimbă unde. (Restul conținutului fiecărei pagini — titluri, text, fotografii — rămâne, ca înainte, direct în fișierul HTML al paginii respective; doar chenarul comun de sus/jos vine din `partials.js`.)
 
+**Zero stiluri inline.** Niciun fișier HTML nu mai conține atribute `style="..."` — tot ce ținea de spațiere, proporții, aliniere etc. e acum în clase CSS, în `assets/css/style.css`, secțiunea „UTILITARE" (spre finalul fișierului) plus câteva clase de componentă lângă regulile lor (`.ar-3-4`/`.ar-4-5`/… lângă `.ph-photo`, `.ring-decor--38/40/44` lângă `.ph-photo__mark`, `.card--horizontal` lângă `.card`). Practic:
+
+- `.mt-18`, `.mb-24`, `.gap-16`, `.py-30`, `.px-34` etc. — spațiere, cu numărul din nume egal cu valoarea în pixeli.
+- `.ar-3-4`, `.ar-4-5`, `.ar-16-10`, `.ar-16-11`, `.ar-4-3` — proporția casetelor foto (`.ph-photo`), înlocuiesc fosta variabilă inline `--ar`.
+- `.fs-11`, `.fs-92`, `.max-30ch` etc. — dimensiuni de font / lățime maximă de text.
+- `.page-subtitle`, `.card--horizontal`, `.card-example__photo`, `.map-embed` — clase de componentă, pentru tipare care se repetă vizual (subtitlul italic de sub h1, cardul orizontal foto+text din exemplele de calendar/audiții, harta Google Maps).
+
+Avantajul practic: o schimbare de genul „vreau mai mult spațiu deasupra titlurilor h2" înseamnă editat o singură regulă CSS (ex. `.mt-36`), nu 10 fișiere HTML. Dacă aveți nevoie de o valoare nouă (ex. `margin-top:30px` care nu există încă), adăugați o clasă nouă lângă cele similare din stylesheet și folosiți-o în HTML — nu reveniți la `style="..."` inline.
+
 Pentru a rula site-ul local, din interiorul folderului `microbis-site/`:
 
 ```
