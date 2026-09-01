@@ -27,13 +27,23 @@ microbis-site/
 │   └── romeo-si-julieta.html      Repertoriu istoric, pagină minimală
 └── assets/
     ├── css/style.css             Tot sistemul de design (un singur fișier)
-    ├── js/main.js                 Navigație, lightbox, galerie, formulare
+    ├── js/main.js                 Navigație mobilă, lightbox, galerie, formulare
+    ├── js/partials.js             Header, meniu, footer — sursă unică (vezi mai jos)
     └── img/
+        ├── logo.png               Logo-ul real, transparent (vezi §2.1)
         ├── favicon.svg            Favicon provizoriu (vezi §2.1)
         └── og-cover.jpg            Imagine de previzualizare pentru social media
 ```
 
-Nu există CSS sau JS separat per pagină — tot ce ține de design e în `assets/css/style.css`, tot ce ține de comportament e în `assets/js/main.js`. Fiecare pagină HTML e independentă (nu există include-uri/template-uri, fiindcă nu există un build step) — headerul și footerul sunt duplicate în fiecare fișier. **Reținut pentru §7:** asta e primul lucru pe care un CMS sau un generator static l-ar rezolva.
+Nu există CSS separat per pagină — tot ce ține de design e în `assets/css/style.css`. Header-ul, bara de sus și footer-ul **nu mai sunt copiate în fiecare pagină** — fiecare fișier HTML conține doar un rând care le cere din `assets/js/partials.js`:
+
+```html
+<script>document.write(microbisHeader('acasa', true));</script>
+…
+<script>document.write(microbisFooter(true));</script>
+```
+
+Tot ce ține de logo, meniu sau footer se editează **o singură dată**, în `assets/js/partials.js` — nu mai există 14 fișiere de umblat pentru o schimbare de genul ăsta. Vedeți comentariul din capul fișierului `partials.js` pentru ce anume se schimbă unde. (Restul conținutului fiecărei pagini — titluri, text, fotografii — rămâne, ca înainte, direct în fișierul HTML al paginii respective; doar chenarul comun de sus/jos vine din `partials.js`.)
 
 Pentru a rula site-ul local, din interiorul folderului `microbis-site/`:
 
@@ -47,19 +57,33 @@ apoi deschideți `http://localhost:8000/`. (Deschiderea directă a fișierelor c
 
 Tot ce e placeholder e marcat vizual și consistent, ca să fie ușor de găsit fără să căutați prin cod: text între paranteze pătrate (`[ de înlocuit ]`, `[ Nume Prenume ]`) pe fotografii, un buton de play pe casetele video, și câte o casetă `.notice` cu chenar punctat auriu lângă orice secțiune cu conținut de completat. Nimic din ce vedeți pe site nu e prezentat ca fiind conținut final decât dacă provine direct din materialul de documentare.
 
-### 2.1 Logo
+### 2.1 Logo — REZOLVAT
 
-Brief-ul menționează un logo existent, care nu a fost pus la dispoziție în această etapă. Site-ul **nu folosește un fișier de logo** — folosește un mic cerc desenat în CSS (`.logo__ring`, în `style.css`) lângă wordmark-ul text „Microbis", ca substitut vizual temporar. Apare în header și footer pe toate paginile.
+Logo-ul real (simbolul dansatorului + wordmark „MICROBIS") e activ pe site, în `assets/img/logo.png`. Fișierul primit era un JPEG cu fundal negru plin — l-am procesat (fundal eliminat, păstrat doar desenul alb, decupat strâns) și salvat ca PNG cu transparență, ca să se integreze fără chenar vizibil peste header-ul semi-transparent și footer-ul plin ale site-ului.
 
-Când aveți fișierul logo real:
-- Căutați clasa `.logo__ring` în `assets/css/style.css` și înlocuiți-o cu un `<img>` sau `<svg>` inline, în toate cele **13 fișiere HTML** unde apare (header + footer = 2 apariții per pagină). Recomandăm SVG pentru claritate la orice rezoluție.
-- `assets/img/favicon.svg` e un cerc roșu/auriu simplificat, gândit să semene cu motivul vizual al site-ului — dacă logo-ul real are altă formă, favicon-ul trebuie refăcut după el (păstrați formatul SVG pătrat, fără fundal transparent, pentru claritate în tab-ul de browser).
+E cablat o singură dată, în `assets/js/partials.js` (header-ul și footer-ul comune — vezi §1), nu în fiecare pagină. Dimensiunea afișată e controlată de clasa `.logo__mark` din `style.css` (`height: 42px`) — dacă vreți logo-ul mai mare sau mai mic, acolo se schimbă o singură valoare și se vede peste tot, instant.
 
-### 2.2 Fotografii
+**Dacă vedeți vreodată logo-ul afișat foarte mare** (cât o parte semnificativă din pagină): aproape sigur browserul a păstrat în cache o versiune veche a `style.css`, de dinainte ca regula `.logo__mark` să existe — un refresh normal uneori nu detectează schimbarea unui fișier CSS. Soluție: reîncărcați forțat pagina (Ctrl+Shift+R pe Windows/Linux, Cmd+Shift+R pe Mac) sau deschideți site-ul într-o fereastră privată/incognito ca să confirmați. Nu e nevoie să schimbați nimic în cod pentru asta.
+
+Rămâne opțional: `assets/img/favicon.svg` e încă simbolul geometric simplu (cerc roșu/auriu), nu logo-ul real — o versiune de favicon derivată din silueta dansatorului ar arăta mai fidel brandului, dar cere o simplificare suplimentară (un logo cu text „MICROBIS" nu se citește la 16px). Spuneți dacă vreți să încerc o variantă.
+
+### 2.2 Fotografii — fotografia din hero-ul paginii Acasă lipsește momentan
+
+`index.html` a fost actualizat (varianta primită de la Radu) să folosească `<img src="assets/img/hero-ritual-mere-rosii.jpg">` în loc de caseta placeholder din hero — dar **acest fișier nu există încă** în `assets/img/`. Până când e adăugat, hero-ul de pe Acasă va afișa o iconiță de imagine spartă în loc de fotografie. Salvați fotografia reală cu exact acest nume în `assets/img/`, sau schimbați `src`-ul din cod dacă preferați alt nume de fișier.
 
 **181 de casete foto** (`.ph-photo`) sunt distribuite pe tot site-ul — hero-uri, cele patru pagini de spectacol, Trupă (12 carduri de membri), Galerie, Despre trupă. Fiecare e un gradient CSS cu textură de grain (definit în `style.css`, clasele `.ph-photo`, `.v2`, `.v3` pentru variații de nuanță) și o etichetă text („Foto" / „[ de înlocuit ]").
 
-Pentru a înlocui o fotografie: ștergeți conținutul din interiorul `<div class="ph-photo">...</div>` (eticheta `.ph-photo__mark`) și puneți un `<img>` cu clasa `ph-photo` păstrată pe elementul părinte (pentru a păstra proporția `--ar` — aspect ratio — deja setată inline, ex. `style="--ar:3/4"`). Recomandăm să păstrați aceleași rapoarte de aspect folosite deja (3/4, 4/5) ca să nu stricați grila.
+**Pentru a înlocui o fotografie NU mai trebuie să atingeți markup-ul din interior.** Adăugați doar atributul `data-img="cale/catre/poza.jpg"` (și, opțional, `data-img-alt="descriere"`) pe div-ul `.ph-photo` existent — restul (span-uri, etichete) rămâne exact cum e, JS-ul (`assets/js/main.js`) le înlocuiește automat la încărcarea paginii:
+
+```html
+<div class="ph-photo v2" style="--ar:4/5" data-reveal
+     data-img="assets/img/hugo-wolff.jpg"
+     data-img-alt="Hugo Wolff, fondatorul companiei Microbis">
+  <div class="ph-photo__mark">...</div>
+</div>
+```
+
+Un singur atribut adăugat, nimic șters. Fără `data-img`, caseta rămâne exact placeholder-ul de-acum.
 
 Vezi §3 pentru dimensiunile recomandate și pipeline-ul de optimizare — brief-ul cere explicit un site rapid, cu galerie indexabilă și originale grele ținute separat, nu încărcate direct.
 

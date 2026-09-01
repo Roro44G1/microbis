@@ -27,6 +27,37 @@
     el.textContent = new Date().getFullYear();
   });
 
+  /* -- înlocuire automată: placeholder foto → fotografie reală ---------
+     Ca să puneți o fotografie reală într-o casetă .ph-photo, NU trebuie
+     să ștergeți sau să înțelegeți markup-ul din interiorul ei (span-uri,
+     etichete etc.) — adăugați doar atributul data-img pe div-ul cu clasa
+     ph-photo, cu calea către fișier, și opțional data-img-alt cu o
+     descriere scurtă. La încărcarea paginii, placeholder-ul e înlocuit
+     automat cu fotografia, păstrând exact aceeași formă/proporție.
+
+     Înainte:
+       <div class="ph-photo" style="--ar:4/5" data-reveal>
+         <div class="ph-photo__mark">...</div>
+       </div>
+
+     După (un singur atribut adăugat, nimic șters):
+       <div class="ph-photo" style="--ar:4/5" data-reveal
+            data-img="assets/img/trupa/echipa.jpg"
+            data-img-alt="Trupa Microbis, fotografie de grup">
+         <div class="ph-photo__mark">...</div>
+       </div>
+
+     Detaliu tehnic pentru README: vezi §2.2. */
+  document.querySelectorAll('.ph-photo[data-img]').forEach(function (el) {
+    var img = document.createElement('img');
+    img.src = el.getAttribute('data-img');
+    img.alt = el.getAttribute('data-img-alt') || '';
+    img.loading = 'lazy';
+    el.classList.add('ph-photo--filled');
+    el.innerHTML = '';
+    el.appendChild(img);
+  });
+
   /* -- scroll reveal ----------------------------------------------------
      Conținutul e vizibil implicit din CSS (fără JS, se vede tot).
      Aici doar "înarmăm" cu .pre-reveal elementele aflate SUB prima

@@ -197,9 +197,7 @@ section { position: relative; }
 .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 76px; }
 
 .logo { display: flex; align-items: center; gap: 10px; font-family: var(--f-display); color: var(--on-ink); }
-.logo__ring { width: 30px; height: 30px; border: 2px solid var(--red); border-radius: 50%; position: relative; flex: none; }
-.logo__ring::after { content: ''; position: absolute; inset: 6px; border: 1px solid var(--gold); border-radius: 50%; }
-.logo__word { font-size: 1.5rem; font-weight: 700; font-style: italic; letter-spacing: .01em; }
+.logo__mark { height: 42px; width: auto; display: block; flex: none; }
 .logo__sub { display: block; font-family: var(--f-label); font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--on-ink-dim); margin-top: 1px; }
 
 .nav { display: flex; align-items: center; gap: 34px; }
@@ -238,6 +236,7 @@ section { position: relative; }
 /* -- hero -- */
 .hero { min-height: 88vh; display: flex; align-items: flex-end; overflow: hidden; }
 .hero__bg { position: absolute; inset: 0; z-index: 0; }
+.hero__bg img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .hero__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(21,15,22,.35) 0%, rgba(21,15,22,.55) 55%, rgba(21,15,22,.96) 100%); }
 .hero__content { position: relative; z-index: 1; padding-block: 64px 72px; width: 100%; }
 .hero__tag { margin-bottom: 22px; }
@@ -255,10 +254,16 @@ section { position: relative; }
 }
 .ph-photo.v2 { background: linear-gradient(155deg, #241b26 0%, #4a2a20 55%, #150f16 100%); }
 .ph-photo.v3 { background: linear-gradient(200deg, #2c1a1f 0%, #2a2130 60%, #150f16 100%); }
-.ph-photo::before { /* grăunte / textură discretă */
+.ph-photo::before { /* grăunte / textură discretă — doar pe placeholder, nu pe fotografii reale */
   content: ''; position: absolute; inset: 0; opacity: .35; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
+/* odată ce JS (assets/js/main.js) a înlocuit placeholder-ul cu o fotografie
+   reală (vezi atributul data-img), gradientul și grăuntele dispar — rămâne
+   doar imaginea, curată */
+.ph-photo.ph-photo--filled { background: none; }
+.ph-photo.ph-photo--filled::before { content: none; }
+.ph-photo--filled img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .ph-photo__mark { position: relative; z-index: 1; text-align: center; color: var(--on-ink-dim); }
 .ph-photo__mark .ring-decor { position: static; display: block; width: 46px; height: 46px; margin: 0 auto 14px; opacity: .55; color: var(--on-ink-dim); }
 .ph-photo__label { font-family: var(--f-label); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
