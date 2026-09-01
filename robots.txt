@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /confidentialitate.html
+
+Sitemap: https://microbis.ro/sitemap.xml

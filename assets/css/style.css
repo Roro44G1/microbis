@@ -1,0 +1,449 @@
+/* ==========================================================================
+   MICROBIS — sistem de design
+   Compania de teatru-dans Microbis · Casa de Cultură a Studenților Sibiu
+   --------------------------------------------------------------------------
+   Notă pentru dezvoltatori: acest fișier e organizat pe secțiuni, de sus în
+   jos: 1) resetare  2) token-uri de design  3) tipografie  4) layout de bază
+   5) componente (nav, butoane, carduri, placeholder foto/video, formulare,
+   galerie, footer)  6) pagini specifice  7) utilitare  8) responsive.
+   Toate componentele funcționează atât pe fundal închis ("ink", pentru
+   paginile-vitrină) cât și pe fundal deschis ("paper", pentru paginile
+   utilitare) — vezi clasele .theme-ink / .theme-paper pe <section>.
+   ========================================================================== */
+
+/* 1) RESETARE ------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea, select { font: inherit; color: inherit; }
+ul, ol { list-style: none; }
+button { background: none; border: none; cursor: pointer; }
+
+/* 2) TOKEN-URI DE DESIGN --------------------------------------------------- */
+:root {
+  /* culori de bază */
+  --ink: #150f16;
+  --ink-soft: #241b26;
+  --ink-line: rgba(246, 241, 232, .14);
+  --paper: #f6f1e8;
+  --paper-soft: #ece1cd;
+  --paper-line: rgba(21, 15, 22, .13);
+
+  /* accente — semnătura vizuală a companiei */
+  --red: #d6402c;
+  --red-dark: #a72e1f;
+  --red-tint: #f2c3b8;
+  --gold: #e2a43a;
+  --gold-dark: #a8721f;
+
+  /* text */
+  --on-ink: #f6f1e8;
+  --on-ink-dim: #baa4a8;
+  --on-ink-faint: #8a767a;
+  --on-paper: #1d1519;
+  --on-paper-dim: #675e56;
+
+  /* tipografie */
+  --f-display: 'Bodoni Moda', 'Georgia', serif;
+  --f-label: 'Space Grotesk', 'Helvetica Neue', sans-serif;
+  --f-body: 'Inter', 'Helvetica Neue', sans-serif;
+
+  /* structură */
+  --container: 1280px;
+  --container-narrow: 760px;
+  --gutter: clamp(20px, 5vw, 64px);
+  --radius-s: 3px;
+  --radius-m: 6px;
+
+  /* umbre / tranziții */
+  --ease: cubic-bezier(.22, .68, 0, 1);
+  --dur: .5s;
+}
+
+/* 3) TIPOGRAFIE ------------------------------------------------------------ */
+body {
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  background: var(--paper);
+  color: var(--on-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--f-display);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -.01em;
+}
+
+.h-display {
+  font-size: clamp(2.6rem, 7vw, 6.4rem);
+  font-weight: 600;
+  font-style: italic;
+}
+
+.h-xl { font-size: clamp(2.2rem, 5vw, 4.2rem); font-weight: 600; }
+.h-lg { font-size: clamp(1.8rem, 3.4vw, 2.9rem); font-weight: 600; }
+.h-md { font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 600; }
+.h-sm { font-size: 1.15rem; font-weight: 600; font-family: var(--f-label); }
+
+.eyebrow {
+  font-family: var(--f-label);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: .6em;
+}
+.eyebrow::before {
+  content: '';
+  width: 22px; height: 1px;
+  background: currentColor;
+  display: inline-block;
+}
+.eyebrow--red { color: var(--red); }
+.theme-ink .eyebrow--muted { color: var(--on-ink-dim); }
+.theme-paper .eyebrow--muted { color: var(--on-paper-dim); }
+
+.back-link {
+  display: flex; width: fit-content; align-items: center; gap: 8px;
+  font-family: var(--f-label); font-size: .8rem; font-weight: 500;
+  color: var(--on-ink-dim); transition: color .2s; margin-bottom: 26px;
+}
+.back-link:hover { color: var(--on-ink); }
+
+.lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.prose p { margin-bottom: 1.15em; max-width: 68ch; }
+.prose p:last-child { margin-bottom: 0; }
+.prose a { color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
+.theme-ink .prose a { color: var(--gold); }
+
+blockquote.pull {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  line-height: 1.35;
+  max-width: 46ch;
+}
+blockquote.pull cite {
+  display: block;
+  font-family: var(--f-label);
+  font-style: normal;
+  font-size: .82rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin-top: 1em;
+  opacity: .65;
+}
+
+/* 4) LAYOUT DE BAZĂ --------------------------------------------------------- */
+.container { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+.container--narrow { max-width: var(--container-narrow); }
+
+section { position: relative; }
+.section { padding-block: clamp(56px, 9vw, 128px); }
+.section--tight { padding-block: clamp(40px, 6vw, 80px); }
+
+.theme-ink { background: var(--ink); color: var(--on-ink); }
+.theme-paper { background: var(--paper); color: var(--on-paper); }
+.theme-paper.alt { background: var(--paper-soft); }
+.theme-ink.alt { background: var(--ink-soft); }
+
+.grid { display: grid; gap: var(--gutter); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } }
+@media (min-width: 901px) and (max-width: 1150px) { .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+
+/* motiv grafic recurent: inele ritualice (mișcare circulară, repetitivă —
+   temă centrală a spectacolelor Microbis) folosite ca decor discret */
+.ring-decor { position: absolute; border-radius: 50%; border: 1px solid currentColor; opacity: .18; pointer-events: none; }
+.ring-decor.spin { animation: spin 60s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 5) COMPONENTE ============================================================= */
+
+/* -- bară utilitară superioară -- */
+.utility-bar {
+  background: var(--ink);
+  color: var(--on-ink-dim);
+  font-family: var(--f-label);
+  font-size: .74rem;
+  letter-spacing: .04em;
+}
+.utility-bar .container { display: flex; align-items: center; justify-content: space-between; height: 38px; }
+.utility-bar a { transition: color .2s; }
+.utility-bar a:hover { color: var(--gold); }
+.utility-bar__social { display: flex; gap: 18px; }
+
+/* -- header / navigație principală -- */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(21, 15, 22, .92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ink-line);
+}
+.site-header .container { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+
+.logo { display: flex; align-items: center; gap: 10px; font-family: var(--f-display); color: var(--on-ink); }
+.logo__ring { width: 30px; height: 30px; border: 2px solid var(--red); border-radius: 50%; position: relative; flex: none; }
+.logo__ring::after { content: ''; position: absolute; inset: 6px; border: 1px solid var(--gold); border-radius: 50%; }
+.logo__word { font-size: 1.5rem; font-weight: 700; font-style: italic; letter-spacing: .01em; }
+.logo__sub { display: block; font-family: var(--f-label); font-size: .58rem; letter-spacing: .16em; text-transform: uppercase; color: var(--on-ink-dim); margin-top: 1px; }
+
+.nav { display: flex; align-items: center; gap: 34px; }
+.nav__links { display: flex; gap: 28px; font-family: var(--f-label); font-size: .86rem; font-weight: 500; }
+.nav__links a { position: relative; padding-block: 6px; color: var(--on-ink-dim); transition: color .2s; }
+.nav__links a::after { content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 0; background: var(--red); transition: width .25s var(--ease); }
+.nav__links a:hover, .nav__links a[aria-current="page"] { color: var(--on-ink); }
+.nav__links a:hover::after, .nav__links a[aria-current="page"]::after { width: 100%; }
+
+.nav__toggle { display: none; flex-direction: column; gap: 5px; width: 30px; }
+.nav__toggle span { height: 2px; background: var(--on-ink); border-radius: 2px; transition: transform .25s, opacity .25s; }
+
+/* -- butoane -- */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--f-label); font-weight: 600; font-size: .86rem;
+  letter-spacing: .03em; text-transform: uppercase;
+  padding: 14px 26px; border-radius: var(--radius-s);
+  transition: transform .25s var(--ease), background .25s, color .25s, border-color .25s;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--red); color: #fff; }
+.btn-primary:hover { background: var(--red-dark); }
+.btn-gold { background: var(--gold); color: var(--ink); }
+.btn-gold:hover { background: var(--gold-dark); color: #fff; }
+.btn-outline { border: 1.5px solid currentColor; background: transparent; }
+.theme-ink .btn-outline { color: var(--on-ink); }
+.theme-ink .btn-outline:hover { background: var(--on-ink); color: var(--ink); }
+.theme-paper .btn-outline { color: var(--on-paper); }
+.theme-paper .btn-outline:hover { background: var(--on-paper); color: var(--paper); }
+.btn-arrow::after { content: '→'; transition: transform .25s var(--ease); }
+.btn-arrow:hover::after { transform: translateX(4px); }
+.btn[disabled] { opacity: .45; cursor: not-allowed; transform: none !important; }
+
+/* -- hero -- */
+.hero { min-height: 88vh; display: flex; align-items: flex-end; overflow: hidden; }
+.hero__bg { position: absolute; inset: 0; z-index: 0; }
+.hero__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(21,15,22,.35) 0%, rgba(21,15,22,.55) 55%, rgba(21,15,22,.96) 100%); }
+.hero__content { position: relative; z-index: 1; padding-block: 64px 72px; width: 100%; }
+.hero__tag { margin-bottom: 22px; }
+.hero__title { margin-bottom: 22px; }
+.hero__actions { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 32px; }
+
+.page-header { padding-block: clamp(120px, 16vw, 200px) clamp(48px, 7vw, 84px); }
+
+/* -- placeholder foto (înlocuit ulterior cu fotografii reale de scenă) -- */
+.ph-photo {
+  position: relative; overflow: hidden; border-radius: var(--radius-m);
+  background: linear-gradient(155deg, #2b1f2c 0%, #3a1f24 45%, #150f16 100%);
+  aspect-ratio: var(--ar, 4/5);
+  display: flex; align-items: center; justify-content: center;
+}
+.ph-photo.v2 { background: linear-gradient(155deg, #241b26 0%, #4a2a20 55%, #150f16 100%); }
+.ph-photo.v3 { background: linear-gradient(200deg, #2c1a1f 0%, #2a2130 60%, #150f16 100%); }
+.ph-photo::before { /* grăunte / textură discretă */
+  content: ''; position: absolute; inset: 0; opacity: .35; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+.ph-photo__mark { position: relative; z-index: 1; text-align: center; color: var(--on-ink-dim); }
+.ph-photo__mark .ring-decor { position: static; display: block; width: 46px; height: 46px; margin: 0 auto 14px; opacity: .55; color: var(--on-ink-dim); }
+.ph-photo__label { font-family: var(--f-label); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; }
+.ph-photo__sub { font-size: .64rem; opacity: .7; margin-top: 4px; }
+
+/* -- placeholder video --
+   Butonul play stă centrat pe axa orizontală, puțin deasupra centrului;
+   eticheta text e ancorată jos, ca să nu se suprapună niciodată cu el. */
+.ph-video { position: relative; cursor: pointer; }
+.ph-video .ph-photo__mark { position: absolute; left: 0; right: 0; bottom: 26px; top: auto; transform: none; }
+.ph-video__play {
+  position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);
+  width: 68px; height: 68px; border-radius: 50%; z-index: 2;
+  background: rgba(246,241,232,.92); display: flex; align-items: center; justify-content: center;
+  transition: transform .25s var(--ease), background .25s;
+}
+.ph-video:hover .ph-video__play { transform: translate(-50%, -50%) scale(1.08); background: var(--red); }
+.ph-video:hover .ph-video__play svg { fill: #fff; }
+.ph-video__play svg { fill: var(--ink); margin-left: 4px; }
+
+/* -- carduri -- */
+.card {
+  border-radius: var(--radius-m); overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform .35s var(--ease);
+}
+.card:hover { transform: translateY(-6px); }
+.card__body { padding: 22px 4px 4px; }
+.card__meta { font-family: var(--f-label); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--red); margin-bottom: 8px; }
+.theme-ink .card__meta { color: var(--gold); }
+.card__title { font-size: 1.3rem; margin-bottom: 8px; }
+.card__text { font-size: .92rem; opacity: .78; }
+
+.member-card { text-align: left; }
+.member-card .ph-photo { aspect-ratio: 3/4; margin-bottom: 14px; }
+.member-card__name { font-family: var(--f-label); font-weight: 600; font-size: 1rem; }
+.member-card__role { font-size: .82rem; opacity: .7; }
+
+/* -- fapte / cifre -- */
+.stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gutter); text-align: center; }
+@media (max-width: 720px) { .stat-strip { grid-template-columns: repeat(2, 1fr); row-gap: 40px; } }
+.stat__num { font-family: var(--f-display); font-style: italic; font-size: clamp(2.2rem, 4.5vw, 3.4rem); color: var(--gold); line-height: 1; }
+.stat__label { font-family: var(--f-label); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; opacity: .7; margin-top: 10px; }
+
+/* -- cronologie -- */
+.timeline { position: relative; padding-left: 34px; border-left: 1px solid var(--ink-line); }
+.theme-paper .timeline { border-left-color: var(--paper-line); }
+.timeline__item { position: relative; padding-bottom: 40px; }
+.timeline__item:last-child { padding-bottom: 0; }
+.timeline__item::before { content: ''; position: absolute; left: -39px; top: 4px; width: 9px; height: 9px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 4px var(--ink); }
+.theme-paper .timeline__item::before { box-shadow: 0 0 0 4px var(--paper); }
+.timeline__year { font-family: var(--f-label); font-weight: 700; color: var(--gold); font-size: .95rem; margin-bottom: 6px; letter-spacing: .04em; }
+.timeline__text { max-width: 62ch; opacity: .88; }
+.timeline__flag { display: inline-block; margin-top: 8px; font-size: .74rem; font-family: var(--f-label); color: var(--gold); border: 1px solid var(--gold-dark); padding: 3px 9px; border-radius: 20px; }
+
+/* -- notă / casetă placeholder de conținut (pentru câmpuri de completat) -- */
+.notice {
+  border: 1px dashed var(--gold-dark);
+  background: rgba(226, 164, 58, .08);
+  border-radius: var(--radius-m);
+  padding: 18px 20px;
+  font-size: .88rem;
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.notice__icon { flex: none; font-family: var(--f-label); font-weight: 700; color: var(--gold); }
+.badge {
+  display: inline-block; font-family: var(--f-label); font-size: .66rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+  border: 1px solid currentColor; color: var(--gold-dark);
+}
+.theme-ink .badge { color: var(--gold); }
+
+/* -- tag-uri gen artistic -- */
+.tag-row { display: flex; flex-wrap: wrap; gap: 10px; }
+.tag { font-family: var(--f-label); font-size: .74rem; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--ink-line); }
+.theme-paper .tag { border-color: var(--paper-line); }
+
+/* -- formulare -- */
+.form { display: grid; gap: 22px; max-width: 640px; }
+.form-row { display: grid; gap: 22px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
+.field label { display: block; font-family: var(--f-label); font-size: .78rem; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 8px; opacity: .75; }
+.field input, .field textarea, .field select {
+  width: 100%; padding: 13px 16px; border-radius: var(--radius-s);
+  border: 1.5px solid var(--paper-line); background: #fff; font-size: .96rem;
+  transition: border-color .2s;
+}
+.field input:focus, .field textarea:focus, .field select:focus { outline: none; border-color: var(--red); }
+.field textarea { min-height: 130px; resize: vertical; }
+.field--required label::after { content: ' *'; color: var(--red); }
+
+.check-field { display: flex; gap: 12px; align-items: flex-start; font-size: .86rem; }
+.check-field input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--red); flex: none; }
+.check-field a { text-decoration: underline; color: var(--red); }
+
+.form-status { font-size: .86rem; padding: 12px 16px; border-radius: var(--radius-s); display: none; }
+.form-status.ok { display: block; background: rgba(46,125,80,.12); color: #1e6b45; }
+.form-status.err { display: block; background: rgba(214,64,44,.1); color: var(--red-dark); }
+
+/* -- galerie -- */
+.gallery-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
+.gallery-filters button {
+  font-family: var(--f-label); font-size: .78rem; letter-spacing: .04em; text-transform: uppercase;
+  padding: 9px 18px; border-radius: 20px; border: 1px solid var(--ink-line); color: var(--on-ink-dim);
+  transition: all .2s;
+}
+.gallery-filters button.active, .gallery-filters button:hover { background: var(--red); border-color: var(--red); color: #fff; }
+.gallery-grid { columns: 3 260px; column-gap: var(--gutter); }
+.gallery-grid figure { break-inside: avoid; margin-bottom: var(--gutter); }
+@media (max-width: 640px) { .gallery-grid { columns: 1; } }
+
+/* -- lightbox -- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 1000; background: rgba(10,7,10,.96);
+  display: none; align-items: center; justify-content: center; padding: 40px;
+}
+.lightbox.open { display: flex; }
+.lightbox__inner { max-width: 1100px; width: 100%; aspect-ratio: 16/9; position: relative; }
+.lightbox__inner iframe, .lightbox__inner .ph-photo { width: 100%; height: 100%; }
+.lightbox__close { position: absolute; top: -46px; right: 0; color: #fff; font-family: var(--f-label); font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+
+/* -- press / citate -- */
+.press-quote { border-left: 3px solid var(--red); padding-left: 24px; }
+.press-source { font-family: var(--f-label); font-size: .78rem; letter-spacing: .05em; opacity: .65; margin-top: 10px; }
+
+/* -- footer -- */
+.site-footer { background: var(--ink); color: var(--on-ink-dim); padding-block: 72px 32px; }
+.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: var(--gutter); padding-bottom: 56px; border-bottom: 1px solid var(--ink-line); }
+@media (max-width: 860px) { .footer-grid { grid-template-columns: 1fr 1fr; row-gap: 40px; } }
+.footer-col h4 { font-family: var(--f-label); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--on-ink); margin-bottom: 18px; }
+.footer-col ul { display: grid; gap: 11px; font-size: .9rem; }
+.footer-col a:hover { color: var(--on-ink); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; font-size: .78rem; flex-wrap: wrap; gap: 12px; }
+.footer-social { display: flex; gap: 16px; }
+.footer-ccs {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; padding: 10px 16px;
+  border: 1px solid var(--ink-line); border-radius: 30px; font-size: .8rem; transition: border-color .2s;
+}
+.footer-ccs:hover { border-color: var(--gold); color: var(--on-ink); }
+
+/* -- CTA final de secțiune -- */
+.cta-band { text-align: center; }
+.cta-band .h-xl { margin-bottom: 26px; }
+
+/* -- scroll reveal (activat din JS) --------------------------------------
+   IMPORTANT: elementele [data-reveal] sunt VIZIBILE implicit (fără JS,
+   totul se vede). Doar JS-ul adaugă .pre-reveal pe elementele aflate sub
+   prima fereastră vizibilă, chiar înainte să le anime la scroll — vezi
+   main.js. Așa, dacă JS pică sau e blocat, nimic nu rămâne ascuns. */
+[data-reveal] { transition: opacity .7s var(--ease), transform .7s var(--ease); }
+[data-reveal].pre-reveal { opacity: 0; transform: translateY(24px); }
+[data-reveal].pre-reveal.is-visible { opacity: 1; transform: none; }
+
+/* 6) UTILITARE -------------------------------------------------------------- */
+.flex { display: flex; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.gap-s { gap: 12px; } .gap-m { gap: 24px; } .gap-l { gap: 48px; }
+.mt-xl { margin-top: clamp(40px, 6vw, 80px); }
+.mb-l { margin-bottom: 40px; }
+.text-center { text-align: center; }
+.opacity-80 { opacity: .8; }
+.max-w-prose { max-width: 66ch; }
+.max-w-prose.mx-auto { margin-inline: auto; }
+.relative { position: relative; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* 7) RESPONSIVE — navigație mobilă ------------------------------------------ */
+@media (max-width: 940px) {
+  .nav__toggle { display: flex; }
+  .nav__links {
+    position: fixed; inset: 76px 0 0 0; z-index: 90; background: var(--ink);
+    flex-direction: column; padding: 40px var(--gutter); gap: 8px; font-size: 1.3rem;
+    transform: translateY(-8px); opacity: 0; pointer-events: none; transition: all .3s var(--ease);
+  }
+  .nav__links.open { transform: none; opacity: 1; pointer-events: auto; }
+  .nav__links a { padding-block: 14px; border-bottom: 1px solid var(--ink-line); }
+  .nav__cta { display: none; }
+  .nav__links.open ~ .nav__toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav__links.open ~ .nav__toggle span:nth-child(2) { opacity: 0; }
+  .nav__links.open ~ .nav__toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .utility-bar__social { display: none; }
+}
