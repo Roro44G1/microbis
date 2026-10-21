@@ -9,7 +9,6 @@ Site-ul e HTML/CSS/JS static, fără build step, fără dependențe — orice se
 ```
 microbis-site/
 ├── index.html                 Acasă
-├── despre-trupa.html          Despre trupă (istoric, Hugo Wolff, noua generație)
 ├── trupa.html                 Trupă / Membri
 ├── calendar.html               Calendar / Bilete (informativ)
 ├── presa.html                  Presă / Critică
@@ -110,10 +109,6 @@ Casete video (`.ph-video`), gândite pentru embed YouTube prin lightbox (nu fiș
 12 carduri placeholder: 8 dansatori + 4 poziții tehnice (Lumini, Sunet, Scenografie & costume, Coordonare producție), fiecare cu `[ Nume Prenume ]` și o poză `.ph-photo`. Componența reală a companiei se schimbă anual (tineri pasionați de dans și teatru, cu reînnoire periodică), motiv pentru care nu am pus nume — vezi și caseta `.notice` de pe pagină, care trimite spre distribuția istorică (nume reale, datate) de pe pagina „Clipe de luciditate".
 
 **Important — GDPR:** înainte de a publica nume și fotografii de membri actuali, aveți nevoie de consimțământ explicit, scris, de la fiecare persoană (secțiunea 5 din `confidentialitate.html` menționează deja acest lucru public). Vezi checklist-ul din §5.
-
-### 2.5 Coregraf / coordonator artistic actual (despre-trupa.html)
-
-O singură casetă, ușor de găsit — căutați `[ Nume de completat ]` în `despre-trupa.html` (în cardul „O nouă generație"). Materialul de documentare nu a putut confirma cine conduce artistic compania după 2023, dincolo de continuitatea asigurată de Florian Oros (regizor) și Alex Wolff (regie/coregrafie pentru „Ritual și Mere Roșii", 2025) — ambii au deja carduri proprii pe aceeași secțiune, cu ce s-a putut confirma despre fiecare.
 
 ### 2.6 Calendar (calendar.html)
 

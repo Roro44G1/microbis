@@ -577,3 +577,5 @@ section { position: relative; }
 /* bandă de statistici cu 3 elemente (Acasă) */
 .stat-strip.stat-strip--3 { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 720px) { .stat-strip.stat-strip--3 { grid-template-columns: 1fr; } }
+/* ancorele de pe Acasă (#despre, #hugo-wolff) nu se ascund sub header-ul fix */
+section[id] { scroll-margin-top: 90px; }
