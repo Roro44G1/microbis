@@ -118,7 +118,8 @@
           '</ul></div>' +
         '</div>' +
         '<div class="footer-bottom">' +
-          '<span>© <span data-year>2026</span> Microbis — Casa de Cultură a Studenților Sibiu</span>' +
+          '<span>© <span data-year>2026</span> Microbis — Casa de Cultură a Studenților Sibiu' +
+            '<span class="footer-credit">Site realizat de dr. ing. Radu Pascu — Asociația AVANS PROIECT, 2026</span></span>' +
           '<div class="footer-social">' +
             '<a href="' + pfx + 'confidentialitate.html">Confidențialitate &amp; GDPR</a>' +
             '<a href="https://www.instagram.com/microbisdancecompany/" target="_blank" rel="noopener">Instagram</a>' +
