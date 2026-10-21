@@ -22,9 +22,9 @@
 
   var NAV_ITEMS = [
     { key: 'acasa',      label: 'Acasă',        href: 'index.html' },
-    { key: 'despre',     label: 'Despre trupă', href: 'index.html#despre' },
+    { key: 'despre',     label: 'Povestea',     href: 'index.html#despre' },
     { key: 'spectacole', label: 'Spectacole',   href: 'spectacole/index.html' },
-    { key: 'trupa',      label: 'Trupă',        href: 'trupa.html' },
+    { key: 'membri',     label: 'Membri',       href: 'membri.html' },
     { key: 'calendar',   label: 'Calendar',     href: 'calendar.html' },
     { key: 'presa',      label: 'Presă',        href: 'presa.html' },
     { key: 'contact',    label: 'Contact',      href: 'contact.html' }
@@ -101,9 +101,9 @@
             '<a href="https://casastudentilorsibiu.ro/" target="_blank" rel="noopener" class="footer-ccs">Casa de Cultură a Studenților Sibiu ↗</a>' +
           '</div>' +
           '<div class="footer-col"><h4>Site</h4><ul>' +
-            '<li><a href="' + pfx + 'index.html#despre">Despre trupă</a></li>' +
+            '<li><a href="' + pfx + 'index.html#despre">Povestea</a></li>' +
             '<li><a href="' + spectacoleHref + '">Spectacole</a></li>' +
-            '<li><a href="' + pfx + 'trupa.html">Trupă</a></li>' +
+            '<li><a href="' + pfx + 'membri.html">Membri</a></li>' +
           '</ul></div>' +
           '<div class="footer-col"><h4>Implică-te</h4><ul>' +
             '<li><a href="' + pfx + 'calendar.html">Calendar spectacole</a></li>' +

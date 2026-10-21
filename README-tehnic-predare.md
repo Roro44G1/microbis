@@ -9,7 +9,7 @@ Site-ul e HTML/CSS/JS static, fără build step, fără dependențe — orice se
 ```
 microbis-site/
 ├── index.html                 Acasă
-├── trupa.html                 Trupă / Membri
+├── membri.html                Membri: fondatorul + lista alfabetică (după nume) a membrilor din 1993 până în prezent
 ├── calendar.html               Calendar / Bilete (informativ)
 ├── presa.html                  Presă / Critică
 ├── auditii.html                 Audiții (formular înscriere)
