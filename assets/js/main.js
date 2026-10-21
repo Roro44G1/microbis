@@ -58,6 +58,122 @@
     el.appendChild(img);
   });
 
+  /* -- galerie foto spectacol: carusel infinit, centrat -----------------
+     Markup așteptat pe pagina unui spectacol:
+       <div class="prod-gallery-wrap" data-gallery
+            data-gallery-folder="img/" data-gallery-files="">
+         <button class="prod-gallery-arrow prev" aria-label="Anterior">‹</button>
+         <div class="prod-gallery-track"></div>
+         <button class="prod-gallery-arrow next" aria-label="Următor">›</button>
+       </div>
+     Ca să apară poze reale: puneți fișierele în folderul spectacolului
+     (implicit subfolderul "img/" de lângă pagina .html) și listați
+     numele lor, separate prin virgulă, în data-gallery-files — ex:
+       data-gallery-files="01.jpg,02.jpg,03.jpg"
+     Fără nicio listă, caseta arată automat câteva poziții placeholder,
+     la fel ca restul site-ului (vezi data-gallery-placeholders, implicit
+     6). Detaliu tehnic pentru README: vezi §2.3. */
+  document.querySelectorAll('[data-gallery]').forEach(function (wrap) {
+    var track = wrap.querySelector('.prod-gallery-track');
+    if (!track) return;
+    var folder = wrap.getAttribute('data-gallery-folder') || 'img/';
+    var filesAttr = (wrap.getAttribute('data-gallery-files') || '').trim();
+    var files = filesAttr
+      ? filesAttr.split(',').map(function (s) { return s.trim(); }).filter(Boolean)
+      : [];
+    var placeholderCount = parseInt(wrap.getAttribute('data-gallery-placeholders') || '6', 10);
+    var real = files.length > 0;
+    var count = real ? files.length : placeholderCount;
+    var baseCards = [];
+    for (var i = 0; i < count; i++) {
+      var card = document.createElement('div');
+      card.className = 'prod-gallery-card';
+      if (real) {
+        var img = document.createElement('img');
+        img.src = folder + files[i];
+        img.alt = '';
+        img.loading = 'lazy';
+        card.appendChild(img);
+      } else {
+        card.innerHTML = '<div class="ph-photo__mark"><span class="ring-decor"></span>'
+          + '<div class="ph-photo__label">Foto</div><div class="ph-photo__sub">[ de completat ]</div></div>';
+      }
+      track.appendChild(card);
+      baseCards.push(card);
+    }
+    var n = baseCards.length;
+    if (n === 0) return;
+    if (n < 2) { baseCards[0].classList.add('active'); return; }
+
+    var clonesNeeded = Math.min(3, n);
+    for (var c = 0; c < clonesNeeded; c++) {
+      var after = baseCards[c % n].cloneNode(true);
+      after.setAttribute('aria-hidden', 'true');
+      track.appendChild(after);
+    }
+    for (var c2 = 0; c2 < clonesNeeded; c2++) {
+      var before = baseCards[n - 1 - (c2 % n)].cloneNode(true);
+      before.setAttribute('aria-hidden', 'true');
+      track.insertBefore(before, track.firstChild);
+    }
+
+    var allCards = Array.from(track.querySelectorAll('.prod-gallery-card'));
+    var idx = clonesNeeded;
+    var isAnimating = false;
+    var autoInterval = null;
+    var pauseTimeout = null;
+
+    function perView() {
+      if (window.innerWidth <= 550) return 1;
+      if (window.innerWidth <= 900) return 2;
+      return 3;
+    }
+    function cardPercent() {
+      var pv = perView();
+      return pv === 1 ? 100 : pv === 2 ? 50 : 33.333;
+    }
+    function goTo(newIdx, animate) {
+      idx = newIdx;
+      var pv = perView();
+      var center = (pv - 1) / 2;
+      var val = -(idx - center) * cardPercent();
+      track.style.transition = animate ? 'transform .6s cubic-bezier(.16,1,.3,1)' : 'none';
+      track.style.transform = 'translateX(' + val + '%)';
+      allCards.forEach(function (c) { c.classList.remove('active'); });
+      if (allCards[idx]) allCards[idx].classList.add('active');
+    }
+    track.addEventListener('transitionend', function () {
+      isAnimating = false;
+      if (idx >= clonesNeeded + n) goTo(idx - n, false);
+      else if (idx < clonesNeeded) goTo(idx + n, false);
+    });
+    function next(animate) { if (isAnimating) return; isAnimating = !!animate; goTo(idx + 1, animate); }
+    function prev(animate) { if (isAnimating) return; isAnimating = !!animate; goTo(idx - 1, animate); }
+    function startAuto() { stopAuto(); autoInterval = setInterval(function () { next(true); }, 4000); }
+    function stopAuto() { if (autoInterval) { clearInterval(autoInterval); autoInterval = null; } }
+    function pauseAutoTemporarily() {
+      stopAuto();
+      clearTimeout(pauseTimeout);
+      pauseTimeout = setTimeout(function () { startAuto(); pauseTimeout = null; }, 6000);
+    }
+    var prevBtn = wrap.querySelector('.prod-gallery-arrow.prev');
+    var nextBtn = wrap.querySelector('.prod-gallery-arrow.next');
+    prevBtn && prevBtn.addEventListener('click', function () { prev(true); pauseAutoTemporarily(); });
+    nextBtn && nextBtn.addEventListener('click', function () { next(true); pauseAutoTemporarily(); });
+    wrap.addEventListener('mouseenter', stopAuto);
+    wrap.addEventListener('mouseleave', function () { if (!pauseTimeout) startAuto(); });
+    var startX = 0;
+    track.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; stopAuto(); }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+      var diff = e.changedTouches[0].clientX - startX;
+      if (diff > 40) prev(true); else if (diff < -40) next(true);
+      pauseAutoTemporarily();
+    });
+    window.addEventListener('resize', function () { goTo(idx, false); });
+    goTo(idx, false);
+    startAuto();
+  });
+
   /* -- scroll reveal ----------------------------------------------------
      Conținutul e vizibil implicit din CSS (fără JS, se vede tot).
      Aici doar "înarmăm" cu .pre-reveal elementele aflate SUB prima
@@ -109,6 +225,19 @@
       inner.innerHTML = '';
       if (type === 'video') {
         var vid = trigger.getAttribute('data-video-id') || 'ID_DE_INLOCUIT';
+        /* cod provizoriu (YT_<folder-spectacol> sau ID_DE_INLOCUIT): clipul
+           nu e încă pe YouTube → mesaj, nu un embed gol. Când clipul e
+           urcat, înlocuiți codul din data-video-id cu ID-ul real (partea
+           de după v= din adresa YouTube). */
+        if (/^(YT_|ID_DE_INLOCUIT)/.test(vid)) {
+          var soon = document.createElement('p');
+          soon.className = 'lightbox__soon';
+          soon.textContent = 'Video în curând.';
+          inner.appendChild(soon);
+          lightbox.classList.add('open');
+          document.documentElement.style.overflow = 'hidden';
+          return;
+        }
         var iframe = document.createElement('iframe');
         iframe.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0';
         iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');

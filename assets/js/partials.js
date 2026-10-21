@@ -98,7 +98,7 @@
             '<a href="' + pfx + 'index.html" class="logo" style="margin-bottom:16px;display:inline-flex">' +
               '<img src="' + logoSrc + '" alt="Microbis" class="logo__mark">' +
             '</a>' +
-            '<p style="max-width:32ch;font-size:.9rem">Compania de teatru-dans a Casei de Cultură a Studenților Sibiu. Din 1993, corpul ca limbaj.</p>' +
+            '<p style="max-width:32ch;font-size:.9rem">Compania de Teatru-Dans a Casei de Cultură a Studenților Sibiu. Din 1993, corpul ca limbaj.</p>' +
             '<a href="https://casastudentilorsibiu.ro/" target="_blank" rel="noopener" class="footer-ccs">Casa de Cultură a Studenților Sibiu ↗</a>' +
           '</div>' +
           '<div class="footer-col"><h4>Site</h4><ul>' +

@@ -20,11 +20,13 @@ microbis-site/
 ├── robots.txt
 ├── sitemap.xml
 ├── spectacole/
-│   ├── index.html                Hub repertoriu
-│   ├── ritual-si-mere-rosii.html  Spectacolul curent (2025)
-│   ├── clipe-de-luciditate.html   2024
-│   ├── tinerete-fara-batranete.html  2023
-│   └── romeo-si-julieta.html      Repertoriu istoric, pagină minimală
+│   ├── index.html                Hub repertoriu (16 producții; Regina Margot prima, apoi invers cronologic)
+│   ├── <spectacol>.html          O pagină per spectacol (ex. damnatul.html)
+│   └── <AAAA>_<titlu>/           Un folder per spectacol (ex. 2014_damnatul/), fără spații:
+│         <AAAA>_<titlu>_01.jpg …  pozele galeriei, optimizate (max. 30, latura lungă 1600 px)
+│         <AAAA>_<titlu>_afis.jpg  afișul, optimizat (1400 px)
+│       (originalele mari și mp4-urile din aceste foldere, ca și folderul Album/,
+│        NU se publică — se mută înainte de urcarea site-ului pe server)
 └── assets/
     ├── css/style.css             Tot sistemul de design (un singur fișier)
     ├── js/main.js                 Navigație mobilă, lightbox, galerie, formulare
@@ -98,18 +100,16 @@ Vezi §3 pentru dimensiunile recomandate și pipeline-ul de optimizare — brief
 
 ### 2.3 Video
 
-**5 casete video** (`.ph-video`), toate gândite pentru embed YouTube sau Vimeo prin lightbox (nu fișiere video servite direct — corect, dat fiind că brief-ul cere site rapid):
+Casete video (`.ph-video`), gândite pentru embed YouTube prin lightbox (nu fișiere video servite direct):
 
-- `spectacole/ritual-si-mere-rosii.html` — trailer
-- `spectacole/clipe-de-luciditate.html` — extras
-- `spectacole/tinerete-fara-batranete.html` — extras
-- `galerie.html` — 2 casete video în grila foto
+- fiecare din cele 16 pagini din `spectacole/` are o casetă cu un cod provizoriu unic, `data-video-id="YT_<folderul spectacolului>"` (ex. `YT_2014_damnatul`); până la înlocuire, la click apare „Video în curând.” Excepție: `clipe-de-luciditate.html`, care are deja ID-ul real `oWrPI4l2v5g`;
+- `galerie.html` — 2 casete video în grila foto, cu `data-video-id="ID_DE_INLOCUIT"`.
 
-Fiecare are `data-video-id="ID_DE_INLOCUIT"`. Înlocuiți `ID_DE_INLOCUIT` cu ID-ul real din URL-ul YouTube (partea de după `v=`) sau Vimeo. Lightbox-ul din `main.js` construiește automat embed-ul `youtube.com/embed/{id}` — dacă alegeți Vimeo în loc de YouTube, trebuie ajustat acel fragment din `main.js` (căutați `data-video-id` în fișier) să construiască URL-ul de embed Vimeo (`player.vimeo.com/video/{id}`).
+Înlocuiți codul provizoriu (`YT_…` sau `ID_DE_INLOCUIT`). Înlocuiți `ID_DE_INLOCUIT` cu ID-ul real din URL-ul YouTube (partea de după `v=`) sau Vimeo. Lightbox-ul din `main.js` construiește automat embed-ul `youtube.com/embed/{id}` — dacă alegeți Vimeo în loc de YouTube, trebuie ajustat acel fragment din `main.js` (căutați `data-video-id` în fișier) să construiască URL-ul de embed Vimeo (`player.vimeo.com/video/{id}`).
 
 ### 2.4 Membri și echipă tehnică (trupa.html)
 
-12 carduri placeholder: 8 dansatori + 4 poziții tehnice (Lumini, Sunet, Scenografie & costume, Coordonare producție), fiecare cu `[ Nume Prenume ]` și o poză `.ph-photo`. Componența reală a companiei se schimbă anual (caracter studențesc), motiv pentru care nu am pus nume — vezi și caseta `.notice` de pe pagină, care trimite spre distribuția istorică (nume reale, datate) de pe pagina „Clipe de luciditate".
+12 carduri placeholder: 8 dansatori + 4 poziții tehnice (Lumini, Sunet, Scenografie & costume, Coordonare producție), fiecare cu `[ Nume Prenume ]` și o poză `.ph-photo`. Componența reală a companiei se schimbă anual (tineri pasionați de dans și teatru, cu reînnoire periodică), motiv pentru care nu am pus nume — vezi și caseta `.notice` de pe pagină, care trimite spre distribuția istorică (nume reale, datate) de pe pagina „Clipe de luciditate".
 
 **Important — GDPR:** înainte de a publica nume și fotografii de membri actuali, aveți nevoie de consimțământ explicit, scris, de la fiecare persoană (secțiunea 5 din `confidentialitate.html` menționează deja acest lucru public). Vezi checklist-ul din §5.
 
