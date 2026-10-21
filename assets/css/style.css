@@ -587,3 +587,25 @@ section[id] { scroll-margin-top: 90px; }
 .members-index__list { list-style: none; margin: 0; padding: 0; }
 .members-index__list li { padding: 3px 0; font-size: .98rem; }
 .members-index__surname { font-weight: 600; text-transform: uppercase; letter-spacing: .02em; }
+
+/* 8) OPTIMIZARE MOBIL / TABLETĂ ------------------------------------------
+   text lizibil (minim ~12px), ținte de atingere de ~44px, fără zoom
+   automat pe iOS în formulare */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+img, video, iframe { max-width: 100%; }
+@media (max-width: 940px) {
+  .nav__toggle { width: 44px; height: 44px; padding: 14px 7px; justify-content: center; margin-right: -7px; }
+}
+@media (max-width: 720px) {
+  .ph-photo__label, .ph-photo__sub, .card__meta, .stat__label, .badge { font-size: .75rem; }
+  .logo__sub { font-size: .66rem; }
+  .utility-bar { font-size: .78rem; }
+  .utility-bar a, .footer-bottom a, .footer-social a { display: inline-block; padding: 10px 0; }
+  .footer-col ul { gap: 0; }
+  .footer-col a { display: inline-block; padding: 10px 0; }
+  .back-link { padding: 10px 0; }
+  .field input, .field textarea, .field select { font-size: 16px; }
+  .members-index__list li { padding: 5px 0; }
+  .tag { font-size: .8rem; padding: 10px 16px; }
+  a[href^="mailto:"], a[href^="tel:"] { display: inline-block; padding: 8px 0; }
+}

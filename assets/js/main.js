@@ -188,7 +188,10 @@
     revealEls.forEach(function (el, i) {
       var rect = el.getBoundingClientRect();
       var alreadyVisible = rect.top < vh && rect.bottom > 0;
-      if (!alreadyVisible) {
+      /* elementele foarte înalte (ex. lista de membri pe mobil) nu se
+         ascund deloc: altfel pot rămâne invizibile pe ecrane mici */
+      var tooTall = rect.height > vh * 0.8;
+      if (!alreadyVisible && !tooTall) {
         el.classList.add('pre-reveal');
         el.style.transitionDelay = (i % 4) * 70 + 'ms';
         armed.push(el);
@@ -202,7 +205,7 @@
             io.unobserve(entry.target);
           }
         });
-      }, { threshold: .15, rootMargin: '0px 0px -40px 0px' });
+      }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
       armed.forEach(function (el) { io.observe(el); });
     }
   }
