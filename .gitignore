@@ -1,0 +1,14 @@
+# Arhiva de originale (poze mari, video, documente) — NU se publică
+spectacole/Album/
+spectacole/**/De mutat/
+*.mp4
+*.mov
+*.MOV
+*.cdr
+*.docx
+*.pptx
+*.pdf
+# fișiere temporare
+_verificare_tmp.tar
+Thumbs.db
+desktop.ini
