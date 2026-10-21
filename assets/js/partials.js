@@ -26,7 +26,6 @@
     { key: 'spectacole', label: 'Spectacole',   href: 'spectacole/index.html' },
     { key: 'trupa',      label: 'Trupă',        href: 'trupa.html' },
     { key: 'calendar',   label: 'Calendar',     href: 'calendar.html' },
-    { key: 'galerie',    label: 'Galerie',      href: 'galerie.html' },
     { key: 'presa',      label: 'Presă',        href: 'presa.html' },
     { key: 'contact',    label: 'Contact',      href: 'contact.html' }
   ];
@@ -105,7 +104,6 @@
             '<li><a href="' + pfx + 'despre-trupa.html">Despre trupă</a></li>' +
             '<li><a href="' + spectacoleHref + '">Spectacole</a></li>' +
             '<li><a href="' + pfx + 'trupa.html">Trupă</a></li>' +
-            '<li><a href="' + pfx + 'galerie.html">Galerie</a></li>' +
           '</ul></div>' +
           '<div class="footer-col"><h4>Implică-te</h4><ul>' +
             '<li><a href="' + pfx + 'calendar.html">Calendar spectacole</a></li>' +

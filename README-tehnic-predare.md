@@ -12,7 +12,6 @@ microbis-site/
 ├── despre-trupa.html          Despre trupă (istoric, Hugo Wolff, noua generație)
 ├── trupa.html                 Trupă / Membri
 ├── calendar.html               Calendar / Bilete (informativ)
-├── galerie.html                Galerie foto + video
 ├── presa.html                  Presă / Critică
 ├── auditii.html                 Audiții (formular înscriere)
 ├── contact.html                 Contact (formular + hartă)
@@ -103,9 +102,8 @@ Vezi §3 pentru dimensiunile recomandate și pipeline-ul de optimizare — brief
 Casete video (`.ph-video`), gândite pentru embed YouTube prin lightbox (nu fișiere video servite direct):
 
 - fiecare din cele 16 pagini din `spectacole/` are o casetă cu un cod provizoriu unic, `data-video-id="YT_<folderul spectacolului>"` (ex. `YT_2014_damnatul`); până la înlocuire, la click apare „Video în curând.” Excepție: `clipe-de-luciditate.html`, care are deja ID-ul real `oWrPI4l2v5g`;
-- `galerie.html` — 2 casete video în grila foto, cu `data-video-id="ID_DE_INLOCUIT"`.
 
-Înlocuiți codul provizoriu (`YT_…` sau `ID_DE_INLOCUIT`). Înlocuiți `ID_DE_INLOCUIT` cu ID-ul real din URL-ul YouTube (partea de după `v=`) sau Vimeo. Lightbox-ul din `main.js` construiește automat embed-ul `youtube.com/embed/{id}` — dacă alegeți Vimeo în loc de YouTube, trebuie ajustat acel fragment din `main.js` (căutați `data-video-id` în fișier) să construiască URL-ul de embed Vimeo (`player.vimeo.com/video/{id}`).
+Înlocuiți codul provizoriu (`YT_…`) cu ID-ul real din URL-ul YouTube (partea de după `v=`) sau Vimeo. Lightbox-ul din `main.js` construiește automat embed-ul `youtube.com/embed/{id}` — dacă alegeți Vimeo în loc de YouTube, trebuie ajustat acel fragment din `main.js` (căutați `data-video-id` în fișier) să construiască URL-ul de embed Vimeo (`player.vimeo.com/video/{id}`).
 
 ### 2.4 Membri și echipă tehnică (trupa.html)
 
