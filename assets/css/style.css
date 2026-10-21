@@ -609,3 +609,7 @@ img, video, iframe { max-width: 100%; }
   .tag { font-size: .8rem; padding: 10px 16px; }
   a[href^="mailto:"], a[href^="tel:"] { display: inline-block; padding: 8px 0; }
 }
+
+/* texte lungi pe două coloane (Hugo Wolff, prefața CCS) — o coloană pe ecrane înguste */
+.prose-columns { columns: 2 340px; column-gap: 56px; }
+.prose-columns p { break-inside: avoid; max-width: none; }
