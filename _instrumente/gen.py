@@ -1,8 +1,8 @@
 import os, re, html, json
 from data import SHOWS
 import data
-FOLD={'ritual-si-mere-rosii':'2025_ritual_si_mere_rosii','clipe-de-luciditate':'2024_clipe_de_luciditate','tinerete-fara-batranete':'2023_tinerete_fara_batranete','romeo-si-julieta':'2019_romeo_si_julieta','fetita-cu-chibrituri':'2018_fetita_cu_chibrituri','colectionarul':'2017_colectionarul','bonnie-clyde':'2016_bonnie_clyde','damnatul':'2014_damnatul','interviu-cu-un-ego':'2013_interviu_cu_un_ego','hurem-conditia-umana':'2012_hurem_conditia_umana','ultima-imbucatura-din-dragoste':'2011_ultima_imbucatura_din_dragoste','regina-margot':'2009_regina_margot','teodora-imparateasa-bizantului':'2008_teodora_imparateasa_bizantului','adam-si-eva':'2005_adam_si_eva','curtea-miracolelor':'2004_curtea_miracolelor','clipe-de-luciditate-1997':'1997_clipe_de_luciditate'}
-SHOWS=sorted(SHOWS,key=lambda s:(s['slug']!='regina-margot', -int(s['year'])))
+FOLD={'margot':'2026_margot','ritual-si-mere-rosii':'2025_ritual_si_mere_rosii','clipe-de-luciditate':'2024_clipe_de_luciditate','tinerete-fara-batranete':'2023_tinerete_fara_batranete','romeo-si-julieta':'2019_romeo_si_julieta','fetita-cu-chibrituri':'2018_fetita_cu_chibrituri','colectionarul':'2017_colectionarul','bonnie-clyde':'2016_bonnie_clyde','damnatul':'2014_damnatul','interviu-cu-un-ego':'2013_interviu_cu_un_ego','hurem-conditia-umana':'2012_hurem_conditia_umana','ultima-imbucatura-din-dragoste':'2011_ultima_imbucatura_din_dragoste','regina-margot':'2009_regina_margot','teodora-imparateasa-bizantului':'2008_teodora_imparateasa_bizantului','adam-si-eva':'2005_adam_si_eva','curtea-miracolelor':'2004_curtea_miracolelor','clipe-de-luciditate-1997':'1997_clipe_de_luciditate'}
+SHOWS=sorted(SHOWS,key=lambda s:(s['slug']!='margot', -int(s['year'])))
 for s in SHOWS:
     s['folder']=FOLD[s['slug']]
     VID={'2025_ritual_si_mere_rosii':'YdlM_1LQA74','2024_clipe_de_luciditate':'jSqcRChi0iA','2023_tinerete_fara_batranete':'dBlye_PlkGw','2019_romeo_si_julieta':'mQRtN62sLm8','2018_fetita_cu_chibrituri':'J9nZtOsWduQ','2017_colectionarul':'-kseIRkjH0w','2014_damnatul':'SxuLArnWC58','2011_ultima_imbucatura_din_dragoste':'aRFUlFCXCT8'}
@@ -84,7 +84,7 @@ def page(i, s, nxt):
         o.append('          <a href="../presa.html" class="btn btn-outline btn-arrow mt-10">Toate cronicile</a>')
     if s.get('press'): o.append('          <a href="../presa.html" class="btn btn-outline btn-arrow mt-26">Citește cronicile</a>')
     if s.get('related'): o.append(f'          <a href="{s["related"][0]}.html" class="btn btn-outline btn-arrow mt-26">{s["related"][1]}</a>')
-    if s.get('missing'):
+    if False and s.get('missing'):
         o += [f'          <div class="notice {"mt-26" if not first else ""}">'.replace(' "', '"'), '            <span class="notice__icon">i</span>',
               f'            <span>Prezentarea completă a spectacolului „{html.escape(pt)}” este în curs de completare din arhiva companiei. Ai materiale, amintiri sau fotografii de la acest spectacol? <a href="../contact.html">Scrie-ne</a>.</span>', '          </div>']
     o.append('        </div>')
@@ -138,7 +138,7 @@ for i, s in enumerate(SHOWS):
     photos, afis = imgs(s['slug']); slug = s['slug']
     fo = s['folder']; src = f'{fo}/{photos[0]}' if photos else (f'{fo}/{fo}_afis.jpg' if afis else '')
     imgattr = f' data-img="{src}" data-img-alt="{attr("Din spectacolul „" + plain(s) + "”")}"' if src else ''
-    meta = s['year'] + (' · Trailer 30–31 oct. 2026' if slug=='regina-margot' else '') + (' · Versiunea originală' if slug=='clipe-de-luciditate-1997' else (' · Reinterpretare' if slug=='clipe-de-luciditate' else ''))
+    meta = s['year'] + (' · Remake · Trailer 30–31 oct. 2026' if slug=='margot' else '') + (' · Versiunea originală' if slug=='clipe-de-luciditate-1997' else (' · Reinterpretare' if slug=='clipe-de-luciditate' else ''))
     o += [f'        <a class="card" href="{slug}.html" data-reveal>',
           f'          <div class="ph-photo{VAR[i%3]} ar-16-10"{imgattr}><div class="ph-photo__mark"><span class="ring-decor ring-decor--44"></span><div class="ph-photo__label">Foto spectacol</div><div class="ph-photo__sub">[ de completat ]</div></div></div>',
           '          <div class="card__body">', f'            <div class="card__meta">{meta}</div>', f'            <h3 class="card__title">{html.escape(plain(s)) if slug!="clipe-de-luciditate-1997" else "Clipe de luciditate"}</h3>',

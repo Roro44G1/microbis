@@ -4,7 +4,7 @@ from common import FOLD, VID
 ROOT = os.path.expanduser('~/mnt/microbis'); SP = ROOT + '/spectacole'; OUT = ROOT + '/en/spectacole'
 os.makedirs(OUT, exist_ok=True)
 SHOWS = []
-for r in sorted(data.SHOWS, key=lambda s: (s['slug'] != 'regina-margot', -int(s['year']))):
+for r in sorted(data.SHOWS, key=lambda s: (s['slug'] != 'margot', -int(s['year']))):
     s = dict(r); e = data_en.E[s['slug']]
     s.update({k: v for k, v in e.items()})
     s['folder'] = FOLD[s['slug']]; s['video'] = VID.get(s['folder'], 'YT_' + s['folder'])
@@ -87,7 +87,7 @@ def page(i, s, nxt):
         o.append('          <a href="../presa.html" class="btn btn-outline btn-arrow mt-10">All reviews</a>')
     if s.get('press'): o.append('          <a href="../presa.html" class="btn btn-outline btn-arrow mt-26">Read the reviews</a>')
     if s.get('related'): o.append(f'          <a href="{s["related"][0]}.html" class="btn btn-outline btn-arrow mt-26">{s["related"][1]}</a>')
-    if s.get('missing'):
+    if False and s.get('missing'):
         o += [f'          <div class="notice{" mt-26" if not first else ""}">', '            <span class="notice__icon">i</span>',
               f'            <span>The full presentation of “{html.escape(pt)}” is being compiled from the company’s archive. Do you have materials, memories or photographs from this performance? <a href="../contact.html">Write to us</a>.</span>', '          </div>']
     o.append('        </div>')
@@ -136,7 +136,7 @@ for i, s in enumerate(SHOWS):
     fo = s['folder']; photos, afis = imgs(fo)
     src = f'{IMG}{fo}/{photos[0]}' if photos else (f'{IMG}{fo}/{fo}_afis.jpg' if afis else '')
     ia = f' data-img="{src}" data-img-alt="{attr("From the performance “" + plain(s) + "”")}"' if src else ''
-    meta = s['year'] + (f' · <span lang="ro">{s["orig"]}</span>' if s.get('orig') else '') + {'regina-margot': ' · Trailer 30–31 Oct. 2026', 'clipe-de-luciditate-1997': ' · Original version', 'clipe-de-luciditate': ' · Reinterpretation'}.get(s['slug'], '')
+    meta = s['year'] + (f' · <span lang="ro">{s["orig"]}</span>' if s.get('orig') else '') + {'margot': ' · Remake · Trailer 30–31 Oct. 2026', 'clipe-de-luciditate-1997': ' · Original version', 'clipe-de-luciditate': ' · Reinterpretation'}.get(s['slug'], '')
     o += [f'        <a class="card" href="{s["slug"]}.html" data-reveal>',
           f'          <div class="ph-photo{VAR[i % 3]} ar-16-10"{ia}><div class="ph-photo__mark"><span class="ring-decor ring-decor--44"></span><div class="ph-photo__label">Performance photo</div><div class="ph-photo__sub">[ to be added ]</div></div></div>',
           '          <div class="card__body">', f'            <div class="card__meta">{meta}</div>', f'            <h3 class="card__title">{html.escape(plain(s))}</h3>',

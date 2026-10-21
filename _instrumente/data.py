@@ -118,11 +118,21 @@ S(dict(slug='ultima-imbucatura-din-dragoste', year='2011', title='Ultima îmbuc�
   about=[], context=['Un spectacol de teatru-dans. Producător: Casa de Cultură a Studenților Sibiu, Compania de Teatru-Dans Microbis. Grafica afișului: Mihai Panaitescu.'],
   missing=True, cast=[], team=[], video='ID_DE_INLOCUIT'))
 S(dict(slug='regina-margot', year='2009', title='Regina Margot', h1='Regina Margot',
-  eyebrow='Trailer · Festivalul de Dans „Hugo Wolff” 2026', subtitle='',
-  credits=[('Gen','Teatru-dans'),('Premieră','2009'),('Trailer','30–31 octombrie 2026, Festivalul de Dans „Hugo Wolff”, Sibiu')],
-  card='Revine ca trailer la Festivalul de Dans „Hugo Wolff”, Sibiu, 30–31 octombrie 2026. Un spectacol cu dramaturgie circulară, care începe și se încheie cu noaptea Sfântului Bartolomeu.',
-  about=[], context=['Spectacolul are o dramaturgie circulară: începe și se încheie cu noaptea Sfântului Bartolomeu.', 'Creat în 2009, „Regina Margot” revine sub forma unui trailer prezentat în cadrul Festivalului de Dans „Hugo Wolff”, la Sibiu, pe 30–31 octombrie 2026.'],
-  missing=True, cast=[], team=[], video=''))
+  eyebrow='Teatru-dans', subtitle='',
+  credits=[('Gen','Teatru-dans'),('Producător','Casa de Cultură a Studenților Sibiu'),('An','2009')],
+  card='Domnia regelui Carol al IX-lea și Noaptea Sfântului Bartolomeu (1572), transpuse în dans printr-un oximoron: realismul murdar suprapus cu frumosul.',
+  about=['Înțelegerea realității din perioada domniei regelui Carol al IX-lea și reflectarea acesteia prin dans reprezintă esența spectacolului „Regina Margot”. Noaptea din 23 spre 24 august 1572, cunoscută în istorie ca Masacrul din Noaptea Sfântului Bartolomeu, este elementul pe care se construiește întreg spectacolul. Înțelegerea contextuală și secvențială a evenimentelor oferă o perspectivă înfiorătoare a uneia dintre atrocitățile istoriei și un portret tulburător al falimentului moral de care era pătrunsă întreaga societate din secolul al XVI-lea. Palatele regale sunt transformate într-un cuib de vipere, de politică de putere, de scheme și înșelăciune.',
+   'Povestea uimitoare a Reginei Margot este transpusă în dans printr-un oximoron, tablourile realismului murdar fiind suprapuse cu frumosul.'],
+  context=['Spectacolul are o dramaturgie circulară: începe și se încheie cu noaptea Sfântului Bartolomeu.'],
+  cast=[], team=[], video=''))
+S(dict(slug='margot', year='2026', title='Margot', h1='Margot',
+  eyebrow='Remake · Festivalul de Dans „Hugo Wolff”', subtitle='',
+  credits=[('Gen','Teatru-dans'),('Trailer','30–31 octombrie 2026'),('Unde','Festivalul de Dans „Hugo Wolff”, Sibiu')],
+  card='Noua producție a companiei, un remake. Trailerul spectacolului este prezentat la Festivalul de Dans „Hugo Wolff”, Sibiu, 30–31 octombrie 2026.',
+  about=['„Margot” este noul spectacol al Companiei de Teatru-Dans MICROBIS — un remake al spectacolului „Regina Margot”, creat de companie în 2009.',
+   'Spectacolul pornește de la realitatea din perioada domniei regelui Carol al IX-lea al Franței și de la Noaptea Sfântului Bartolomeu — masacrul din 23 spre 24 august 1572, din Paris. Dramaturgia este circulară: spectacolul începe și se încheie cu noaptea Sfântului Bartolomeu.'],
+  context=['Trailerul spectacolului „Margot” este prezentat în cadrul Festivalului de Dans „Hugo Wolff”, la Sibiu, pe 30–31 octombrie 2026.'],
+  cast=[], team=[], video=''))
 S(dict(slug='teodora-imparateasa-bizantului', year='2008', title='Teodora, Împărăteasa Bizanțului', h1='Teodora',
   eyebrow='Teatru-dans', subtitle='Împărăteasa Bizanțului',
   credits=[('Coregrafie',HW),('Muzică','Tică Alexe'),('An','2008')],
@@ -134,7 +144,7 @@ S(dict(slug='teodora-imparateasa-bizantului', year='2008', title='Teodora, Împ�
 S(dict(slug='adam-si-eva', year='2005', title='Adam și Eva', h1='Adam și Eva',
   eyebrow='Teatru-dans', subtitle='',
   credits=[('Gen','Teatru-dans'),('Producător','Casa de Cultură a Studenților Sibiu'),('Premieră','2005, la Festivalul de dans')],
-  card='Producție din arhiva companiei — materiale în curs de completare.',
+  card='Pasiune, gelozie și frământări sufletești: șase cupluri și un protest al tinerilor împotriva violenței în familie.',
   about=[], context=[], missing=True, cast=[], team=[], video=''))
 S(dict(slug='curtea-miracolelor', year='2004', title='Curtea miracolelor', h1='Curtea<br>miracolelor',
   eyebrow='Teatru-dans', subtitle='',

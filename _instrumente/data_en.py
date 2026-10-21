@@ -106,10 +106,20 @@ E['ultima-imbucatura-din-dragoste'] = dict(title='The Last Bite of… Love', h1=
   quotes=[('Starting from historical scenes, Hugo Wolff, who created the choreography for this performance, has transposed into dance moments from the dark history of Europe. The MICROBIS Dance Company presents a creation set in a ‘death camp’, a story of love and hate told through dance and music. The MICROBIS Dance Company supports and promotes mainly contemporary dance, with the aim of initiating high-impact cultural projects. Although made up mostly of students, the Microbis Company has managed over the years to impress with its original choreographic productions.', 'Adevărul de seară, 4 October 2011')],
   team=[])
 E['regina-margot'] = dict(title='Queen Margot', h1='Queen Margot', orig='Regina Margot',
-  eyebrow='Trailer · “Hugo Wolff” Dance Festival 2026', subtitle='',
-  credits=[('Genre','Theatre dance'),('Premiere','2009'),('Trailer','30–31 October 2026, “Hugo Wolff” Dance Festival, Sibiu')],
-  card='Returns as a trailer at the “Hugo Wolff” Dance Festival, Sibiu, 30–31 October 2026. A performance with a circular dramaturgy, opening and closing with St Bartholomew’s Night.',
-  about=[], context=['The performance has a circular dramaturgy: it opens and closes with St Bartholomew’s Night.', 'Created in 2009, “Queen Margot” returns as a trailer presented at the “Hugo Wolff” Dance Festival in Sibiu, on 30–31 October 2026.'],
+  eyebrow='Theatre dance', subtitle='',
+  credits=[('Genre','Theatre dance'),('Producer','University Cultural Center of Sibiu'),('Year','2009')],
+  card='The reign of King Charles IX and St Bartholomew’s Night (1572), transposed into dance through an oxymoron: dirty realism superimposed with beauty.',
+  about=['Understanding the reality of the reign of King Charles IX and reflecting it through dance is the essence of the performance “Queen Margot”. The night of 23 to 24 August 1572, known in history as the St Bartholomew’s Day Massacre, is the element on which the entire performance is built. A contextual and sequential understanding of the events offers a chilling perspective on one of history’s atrocities and a disturbing portrait of the moral bankruptcy that pervaded the whole of 16th-century society. The royal palaces are turned into a nest of vipers, of power politics, schemes and deceit.',
+   'The astonishing story of Queen Margot is transposed into dance through an oxymoron, with tableaux of dirty realism superimposed with beauty.'],
+  context=['The performance has a circular dramaturgy: it opens and closes with St Bartholomew’s Night.'],
+  team=[])
+E['margot'] = dict(title='Margot', h1='Margot', orig='',
+  eyebrow='Remake · “Hugo Wolff” Dance Festival', subtitle='',
+  credits=[('Genre','Theatre dance'),('Trailer','30–31 October 2026'),('Where','“Hugo Wolff” Dance Festival, Sibiu')],
+  card='The company’s new production, a remake. The performance trailer is presented at the “Hugo Wolff” Dance Festival, Sibiu, 30–31 October 2026.',
+  about=['“Margot” is the new production of the MICROBIS Theatre Dance Company — a remake of “Queen Margot” (Regina Margot), created by the company in 2009.',
+   'The performance draws on the reality of the reign of King Charles IX of France and on St Bartholomew’s Night — the massacre of 23 to 24 August 1572 in Paris. Its dramaturgy is circular: the performance opens and closes with St Bartholomew’s Night.'],
+  context=['The trailer for “Margot” is presented at the “Hugo Wolff” Dance Festival in Sibiu, on 30–31 October 2026.'],
   team=[])
 E['teodora-imparateasa-bizantului'] = dict(title='Theodora, Empress of Byzantium', h1='Theodora', orig='Teodora, Împărăteasa Bizanțului',
   eyebrow='Theatre dance', subtitle='Empress of Byzantium',
@@ -120,7 +130,7 @@ E['teodora-imparateasa-bizantului'] = dict(title='Theodora, Empress of Byzantium
 E['adam-si-eva'] = dict(title='Adam and Eve', h1='Adam and Eve', orig='Adam și Eva',
   eyebrow='Theatre dance', subtitle='',
   credits=[('Genre','Theatre dance'),('Producer','University Cultural Center of Sibiu'),('Premiere','2005, at the Dance Festival')],
-  card='A production from the company’s archive — materials being added.',
+  card='Passion, jealousy and emotional turmoil: six couples and a protest by young people against domestic violence.',
   about=[], context=[],
   quotes=[('The dance performance ‘Adam and Eve’ brings passion, jealousy and emotional turmoil to the stage. This is the triangle that shapes the fate of the six couples who tell their stories in contemporary dance rhythms, their love stories scarred by domestic violence. This is one of the serious problems society faces, which is also why ‘Adam and Eve’ is a protest and a struggle of young people against domestic violence. ‘Don’t let love die’ — this is the message the MICROBIS dancers want to convey. The performance is the third production made entirely by the University Cultural Center of Sibiu.', 'Alina Suciu, 24 ORE MUREȘENE, 26 November 2005')],
   team=[])

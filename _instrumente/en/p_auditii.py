@@ -13,7 +13,6 @@ PAIRS = [
 ('Compania e deschisă tuturor tinerilor pasionați de dans și teatru.', 'The company is open to all young people passionate about dance and theatre.'),
 ('Timp pentru repetiții', 'Time for rehearsals'),
 ('Producțiile companiei cer repetiții regulate — programul exact se stabilește la începutul fiecărui sezon.', 'The company’s productions require regular rehearsals — the exact schedule is set at the start of each season.'),
-('Cele trei condiții de mai sus sunt un punct de plecare rezonabil pentru o companie de teatru-dans — le puteți ajusta sau completa cu cerințele exacte ale sesiunii curente de audiții (probă de dans, monolog, etc.) înainte de publicare.', 'The three conditions above are a reasonable starting point for a theatre dance company — they can be adjusted or supplemented with the exact requirements of the current audition session (dance test, monologue, etc.) before publication.'),
 ('Următoarea sesiune', 'Next session'),
 ('Data următoarei sesiuni de audiții va fi anunțată aici și pe paginile noastre de Instagram și Facebook. Până atunci, completează formularul de mai jos — te contactăm noi când se deschide o nouă sesiune.', 'The date of the next audition session will be announced here and on our Instagram and Facebook pages. Until then, fill in the form below — we will contact you when a new session opens.'),
 ('Înscriere', 'Sign up'), ('Spune-ne despre tine', 'Tell us about yourself'),
