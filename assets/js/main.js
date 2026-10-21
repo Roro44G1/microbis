@@ -5,6 +5,10 @@
 (function () {
   'use strict';
 
+  /* -- limbă: paginile din /en/ au <html lang="en"> ------------------- */
+  var EN = /^en/i.test(document.documentElement.lang || '');
+  function T(ro, en) { return EN ? en : ro; }
+
   /* -- meniu mobil ---------------------------------------------------- */
   var toggle = document.querySelector('.nav__toggle');
   var links = document.querySelector('.nav__links');
@@ -96,7 +100,7 @@
         card.appendChild(img);
       } else {
         card.innerHTML = '<div class="ph-photo__mark"><span class="ring-decor"></span>'
-          + '<div class="ph-photo__label">Foto</div><div class="ph-photo__sub">[ de completat ]</div></div>';
+          + '<div class="ph-photo__label">' + T('Foto', 'Photo') + '</div><div class="ph-photo__sub">' + T('[ de completat ]', '[ to be added ]') + '</div></div>';
       }
       track.appendChild(card);
       baseCards.push(card);
@@ -235,7 +239,7 @@
         if (/^(YT_|ID_DE_INLOCUIT)/.test(vid)) {
           var soon = document.createElement('p');
           soon.className = 'lightbox__soon';
-          soon.textContent = 'Video în curând.';
+          soon.textContent = T('Video în curând.', 'Video coming soon.');
           inner.appendChild(soon);
           lightbox.classList.add('open');
           document.documentElement.style.overflow = 'hidden';
@@ -309,7 +313,7 @@
       if (!valid) {
         e.preventDefault();
         if (status) {
-          status.textContent = 'Te rugăm să completezi toate câmpurile obligatorii (*) și să confirmi acordul GDPR.';
+          status.textContent = T('Te rugăm să completezi toate câmpurile obligatorii (*) și să confirmi acordul GDPR.', 'Please fill in all required fields (*) and confirm your GDPR consent.');
           status.className = 'form-status err';
         }
         return;
@@ -320,7 +324,7 @@
         e.preventDefault();
         form.reset();
         if (status) {
-          status.textContent = 'Formular OK din punct de vedere tehnic — dar nu e conectat încă la un serviciu real de trimitere. Vezi nota din README-tehnic-predare.md.';
+          status.textContent = T('Formular OK din punct de vedere tehnic — dar nu e conectat încă la un serviciu real de trimitere. Vezi nota din README-tehnic-predare.md.', 'The form works technically, but it is not yet connected to a sending service.');
           status.className = 'form-status ok';
         }
       }

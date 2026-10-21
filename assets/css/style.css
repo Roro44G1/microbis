@@ -616,3 +616,21 @@ img, video, iframe { max-width: 100%; }
 
 /* creditul de realizare a site-ului, sub linia de copyright din footer */
 .footer-credit { display: block; margin-top: 6px; opacity: .65; }
+
+/* comutator de limbă RO | EN din header */
+.lang-switch { font-family: var(--f-label); font-size: .78rem; font-weight: 600; letter-spacing: .08em; padding: 6px 12px; color: var(--on-ink-dim); border: 1px solid var(--on-ink-faint); border-radius: 20px; transition: color .2s, border-color .2s; }
+.lang-switch:hover { color: var(--gold); border-color: var(--gold); }
+@media (max-width: 940px) {
+  .nav { gap: 14px; }
+  .lang-switch { padding: 10px 12px; }
+}
+
+/* bara de sus pe ecrane mici: textul lung nu se rupe pe două rânduri */
+@media (max-width: 640px) {
+  .utility-bar .container > a:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+}
+/* meniul mobil: header-ul are backdrop-filter, deci meniul „fixed” se poziționează
+   față de header — îi dăm explicit înălțimea ecranului, ca fundalul să acopere tot */
+@media (max-width: 940px) {
+  .nav__links { inset: 76px 0 auto 0; height: calc(100vh - 76px); height: calc(100dvh - 76px); overflow-y: auto; }
+}

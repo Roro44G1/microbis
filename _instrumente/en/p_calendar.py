@@ -1,0 +1,20 @@
+REL = 'calendar.html'
+PAIRS = [
+('Calendar spectacole — Microbis', 'Performance calendar — Microbis'),
+('Reprezentațiile viitoare ale companiei Microbis — dată, oră, locație și informații de rezervare.', 'Upcoming performances by the Microbis company — date, time, venue and booking information.'),
+('calendar spectacole Microbis, bilete teatru dans Sibiu, spectacole teatru-dans Sibiu', 'Microbis performance calendar, theatre dance tickets Sibiu, theatre dance performances Sibiu'),
+('Reprezentațiile viitoare ale companiei Microbis.', 'Upcoming performances by the Microbis company.'),
+('Spectacole viitoare', 'Upcoming performances'),
+('Fără bilete online, deocamdată — rezervările se fac direct, prin contact. Cel mai sigur mod de a nu rata un spectacol: urmărește-ne pe Instagram sau Facebook.', 'No online tickets for now — bookings are made directly, by getting in touch with us. The surest way not to miss a performance: follow us on Instagram or Facebook.'),
+('Afișul spectacolului „Regina Margot”', 'Poster for “Queen Margot” (Regina Margot)'), ('Afiș', 'Poster'),
+('Trailer · Festivalul de Dans „Hugo Wolff”', 'Trailer · “Hugo Wolff” Dance Festival'),
+('Regina Margot', 'Queen Margot (Regina Margot)'),
+('30–31 octombrie 2026 · Sibiu', '30–31 October 2026 · Sibiu'),
+('Detalii spectacol', 'Performance details'), ('Informații prin contact', 'Get in touch for details'),
+('Cum funcționează rezervarea', 'How booking works'),
+('Fără sistem de vânzare online, în acest moment. Pentru fiecare spectacol anunțat, scrieți-ne prin', 'There is no online ticketing system at the moment. For each announced performance, write to us via the'),
+('formularul de contact', 'contact form'),
+(', prin e-mail sau telefon, cu numărul de locuri dorite — vă confirmăm disponibilitatea.', ', by e-mail or by phone, stating the number of seats you would like — we will confirm availability.'),
+('Vrei vânzare online de bilete?', 'Would you like online ticket sales?'),
+('Structura paginii permite oricând integrarea unei platforme externe (ex. iabilet.ro, entertix.ro) — fiecare card de eveniment poate primi, în loc de butonul „Rezervă prin contact", un link direct către pagina de bilete a platformei alese.', 'The page structure allows an external ticketing platform (e.g. iabilet.ro, entertix.ro) to be added at any time — instead of the “Book via contact” button, each event card can link directly to the ticket page of the chosen platform.'),
+]
