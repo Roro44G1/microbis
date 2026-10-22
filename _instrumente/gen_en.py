@@ -4,7 +4,7 @@ from common import FOLD, VID
 ROOT = os.path.expanduser('~/mnt/microbis'); SP = ROOT + '/spectacole'; OUT = ROOT + '/en/spectacole'
 os.makedirs(OUT, exist_ok=True)
 SHOWS = []
-for r in sorted(data.SHOWS, key=lambda s: (s['slug'] != 'margot', -int(s['year']))):
+for r in sorted((s for s in data.SHOWS if s['slug'] != 'margot'), key=lambda s: -int(s['year'])):
     s = dict(r); e = data_en.E[s['slug']]
     s.update({k: v for k, v in e.items()})
     s['folder'] = FOLD[s['slug']]; s['video'] = VID.get(s['folder'], 'YT_' + s['folder'])

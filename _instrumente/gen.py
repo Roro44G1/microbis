@@ -2,7 +2,8 @@ import os, re, html, json
 from data import SHOWS
 import data
 FOLD={'margot':'2026_margot','ritual-si-mere-rosii':'2025_ritual_si_mere_rosii','clipe-de-luciditate':'2024_clipe_de_luciditate','tinerete-fara-batranete':'2023_tinerete_fara_batranete','romeo-si-julieta':'2019_romeo_si_julieta','fetita-cu-chibrituri':'2018_fetita_cu_chibrituri','colectionarul':'2017_colectionarul','bonnie-clyde':'2016_bonnie_clyde','damnatul':'2014_damnatul','interviu-cu-un-ego':'2013_interviu_cu_un_ego','hurem-conditia-umana':'2012_hurem_conditia_umana','ultima-imbucatura-din-dragoste':'2011_ultima_imbucatura_din_dragoste','regina-margot':'2009_regina_margot','teodora-imparateasa-bizantului':'2008_teodora_imparateasa_bizantului','adam-si-eva':'2005_adam_si_eva','curtea-miracolelor':'2004_curtea_miracolelor','clipe-de-luciditate-1997':'1997_clipe_de_luciditate'}
-SHOWS=sorted(SHOWS,key=lambda s:(s['slug']!='margot', -int(s['year'])))
+# „Margot” (reeditare 2026) apare doar pe Acasă și în Calendar, nu în repertoriu (decizie Radu, 22.10.2026)
+SHOWS=sorted((s for s in SHOWS if s['slug']!='margot'),key=lambda s:-int(s['year']))
 for s in SHOWS:
     s['folder']=FOLD[s['slug']]
     VID={'2025_ritual_si_mere_rosii':'YdlM_1LQA74','2024_clipe_de_luciditate':'jSqcRChi0iA','2023_tinerete_fara_batranete':'dBlye_PlkGw','2019_romeo_si_julieta':'mQRtN62sLm8','2018_fetita_cu_chibrituri':'J9nZtOsWduQ','2017_colectionarul':'-kseIRkjH0w','2014_damnatul':'SxuLArnWC58','2011_ultima_imbucatura_din_dragoste':'aRFUlFCXCT8'}

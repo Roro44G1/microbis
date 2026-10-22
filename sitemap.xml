@@ -2,7 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://microbis.ro/</loc><priority>1.0</priority></url>
   <url><loc>https://microbis.ro/spectacole/index.html</loc><priority>0.9</priority></url>
-  <url><loc>https://microbis.ro/spectacole/margot.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/spectacole/ritual-si-mere-rosii.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/spectacole/clipe-de-luciditate.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/spectacole/tinerete-fara-batranete.html</loc><priority>0.8</priority></url>
@@ -26,7 +25,6 @@
   <url><loc>https://microbis.ro/contact.html</loc><priority>0.6</priority></url>
   <url><loc>https://microbis.ro/en/</loc><priority>1.0</priority></url>
   <url><loc>https://microbis.ro/en/spectacole/index.html</loc><priority>0.9</priority></url>
-  <url><loc>https://microbis.ro/en/spectacole/margot.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/en/spectacole/ritual-si-mere-rosii.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/en/spectacole/clipe-de-luciditate.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/en/spectacole/tinerete-fara-batranete.html</loc><priority>0.8</priority></url>
