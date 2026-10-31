@@ -692,3 +692,12 @@ img, video, iframe { max-width: 100%; }
   .film__view { overflow-x: auto; }
   .film__toggle { display: none; }
 }
+
+/* ---- panoplia de afișe ale festivalului (Acasă, secțiunea „Moștenirea vie”) ---- */
+.panoply { margin: 0; width: 100%; max-width: 460px; justify-self: center; }
+.panoply__link { display: block; border-radius: var(--radius-m); overflow: hidden; box-shadow: 0 18px 40px rgba(21, 15, 22, .18); }
+.panoply__link img { display: block; width: 100%; height: auto; transition: transform .5s ease; }
+.panoply__link:hover img, .panoply__link:focus-visible img { transform: scale(1.02); }
+.panoply__link:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+.panoply__caption { margin-top: 12px; text-align: center; font-family: var(--f-label); font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--on-paper-dim); }
+.lightbox--free .lightbox__inner { aspect-ratio: auto; height: 86vh; height: 86dvh; }

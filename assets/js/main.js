@@ -341,6 +341,7 @@
     }
     function closeLightbox() {
       lightbox.classList.remove('open');
+      lightbox.classList.remove('lightbox--free');
       inner.innerHTML = '';
       document.documentElement.style.overflow = '';
     }
@@ -348,6 +349,22 @@
       trigger.addEventListener('click', function (e) {
         e.preventDefault();
         openLightbox(trigger);
+      });
+    });
+    /* [data-zoom] pe un link spre o imagine → o deschide mare în lightbox,
+       la proporția ei (ex. panoplia de afișe de pe Acasă) */
+    document.querySelectorAll('[data-zoom]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        inner.innerHTML = '';
+        var big = document.createElement('img');
+        big.className = 'lightbox__img';
+        big.src = link.getAttribute('href');
+        var small = link.querySelector('img');
+        big.alt = small ? small.alt : '';
+        inner.appendChild(big);
+        lightbox.classList.add('lightbox--free', 'open');
+        document.documentElement.style.overflow = 'hidden';
       });
     });
     closeBtn && closeBtn.addEventListener('click', closeLightbox);
