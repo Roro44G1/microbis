@@ -178,6 +178,87 @@
     startAuto();
   });
 
+  /* -- galerie tip ROLĂ DE FILM (folosită pentru „Margot” pe Acasă) -----
+     Markup:
+       <div class="film" data-film data-film-folder="spectacole/2026_margot/"
+            data-film-files="2026_margot_01.jpg,2026_margot_02.jpg,..."></div>
+     Scriptul construiește pelicula (perforații + cadre), cele două role
+     care se rotesc și butonul Pauză/Pornește. Pelicula rulează continuu,
+     se oprește la hover, iar click pe un cadru îl deschide mărit în
+     lightbox. Cu „reducere animații” activată în sistem, nu rulează
+     singură: se derulează manual, orizontal. */
+  var REEL_SVG = '<svg viewBox="0 0 200 200" aria-hidden="true">'
+    + '<circle cx="100" cy="100" r="96" class="reel__flange"/>'
+    + '<circle cx="100" cy="100" r="62" class="reel__wound"/>'
+    + '<circle cx="100" cy="100" r="50" class="reel__wound-line"/>'
+    + '<circle cx="100" cy="100" r="38" class="reel__wound-line"/>'
+    + [0, 72, 144, 216, 288].map(function (a) {
+        return '<path class="reel__hole" transform="rotate(' + a + ' 100 100)" d="M100 22 a14 14 0 0 1 14 14 v14 a14 14 0 0 1 -28 0 v-14 a14 14 0 0 1 14 -14z"/>';
+      }).join('')
+    + '<circle cx="100" cy="100" r="20" class="reel__hub"/>'
+    + '<circle cx="100" cy="100" r="7" class="reel__axle"/>'
+    + '</svg>';
+  document.querySelectorAll('[data-film]').forEach(function (wrap) {
+    var folder = wrap.getAttribute('data-film-folder') || '';
+    var files = (wrap.getAttribute('data-film-files') || '').split(',')
+      .map(function (s) { return s.trim(); }).filter(Boolean);
+    if (!files.length) return;
+    var view = document.createElement('div');
+    view.className = 'film__view';
+    var track = document.createElement('div');
+    track.className = 'film__track';
+    for (var copy = 0; copy < 2; copy++) {
+      files.forEach(function (f, i) {
+        var a = document.createElement('a');
+        a.className = 'film__frame';
+        a.href = folder + f;
+        if (copy) { a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
+        else { a.setAttribute('aria-label', T('Mărește fotografia ', 'Enlarge photo ') + (i + 1)); }
+        var img = document.createElement('img');
+        img.src = folder + f;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        a.appendChild(img);
+        a.addEventListener('click', function (e) {
+          var lb = document.getElementById('lightbox');
+          if (!lb) return;
+          e.preventDefault();
+          var inner = lb.querySelector('.lightbox__inner');
+          inner.innerHTML = '';
+          var big = document.createElement('img');
+          big.className = 'lightbox__img';
+          big.src = folder + f;
+          big.alt = '';
+          inner.appendChild(big);
+          lb.classList.add('open');
+          document.documentElement.style.overflow = 'hidden';
+        });
+        track.appendChild(a);
+      });
+    }
+    track.style.setProperty('--film-dur', (files.length * 5) + 's');
+    view.appendChild(track);
+    wrap.appendChild(view);
+    ['film__reel film__reel--left', 'film__reel film__reel--right'].forEach(function (cls) {
+      var r = document.createElement('span');
+      r.className = cls;
+      r.innerHTML = REEL_SVG;
+      wrap.appendChild(r);
+    });
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'film__toggle';
+    function label() {
+      var paused = wrap.classList.contains('is-paused');
+      btn.textContent = paused ? T('▶  Pornește pelicula', '▶  Play the reel') : T('❚❚  Oprește pelicula', '❚❚  Pause the reel');
+      btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    }
+    btn.addEventListener('click', function () { wrap.classList.toggle('is-paused'); label(); });
+    label();
+    wrap.appendChild(btn);
+  });
+
   /* -- scroll reveal ----------------------------------------------------
      Conținutul e vizibil implicit din CSS (fără JS, se vede tot).
      Aici doar "înarmăm" cu .pre-reveal elementele aflate SUB prima

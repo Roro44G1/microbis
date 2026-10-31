@@ -634,3 +634,61 @@ img, video, iframe { max-width: 100%; }
 @media (max-width: 940px) {
   .nav__links { inset: 76px 0 auto 0; height: calc(100vh - 76px); height: calc(100dvh - 76px); overflow-y: auto; }
 }
+
+/* ---- galerie tip ROLĂ DE FILM (Margot, pe Acasă) — logica în main.js ---- */
+.film { position: relative; overflow: hidden; padding: 40px 0 0; }
+.film__view { position: relative; overflow: hidden; }
+.film__track {
+  display: flex; width: max-content; position: relative;
+  padding: 30px 0; background: #0b080b;
+  animation: film-roll var(--film-dur, 90s) linear infinite;
+  will-change: transform;
+}
+.film__track::before, .film__track::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 12px; opacity: .78;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='12'%3E%3Crect x='9' y='0' width='12' height='12' rx='2.5' fill='%23f6f1e8'/%3E%3C/svg%3E") repeat-x left center / 30px 12px;
+}
+.film__track::before { top: 9px; }
+.film__track::after { bottom: 9px; }
+.film__frame { flex: 0 0 auto; display: block; height: 210px; aspect-ratio: 3 / 2; margin: 0 7px; overflow: hidden; border-radius: 2px; background: #000; }
+.film__frame img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92) contrast(1.05); transition: transform .5s ease, filter .5s ease; }
+.film__frame:hover img, .film__frame:focus-visible img { transform: scale(1.06); filter: saturate(1) contrast(1.05); }
+.film__frame:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.film__reel {
+  position: absolute; top: calc(40px + 135px); width: 340px; height: 340px; margin-top: -170px;
+  z-index: 2; pointer-events: none; filter: drop-shadow(0 12px 28px rgba(0, 0, 0, .65));
+  animation: reel-spin 9s linear infinite;
+}
+.film__reel svg { width: 100%; height: 100%; display: block; }
+.film__reel--left { left: -170px; }
+.film__reel--right { right: -170px; animation-duration: 7s; }
+.reel__flange { fill: #2a2029; stroke: var(--gold-dark); stroke-width: 2; }
+.reel__wound { fill: #0b080b; }
+.reel__wound-line { fill: none; stroke: rgba(246, 241, 232, .07); stroke-width: 1; }
+.reel__hole { fill: var(--ink); stroke: rgba(226, 164, 58, .35); stroke-width: 1; }
+.reel__hub { fill: var(--gold-dark); }
+.reel__axle { fill: var(--ink); }
+.film__view:hover ~ .film__reel, .film__view:hover .film__track,
+.film.is-paused .film__track, .film.is-paused .film__reel { animation-play-state: paused; }
+.film__toggle {
+  display: block; margin: 26px auto 0; padding: 9px 18px; border-radius: 999px;
+  border: 1px solid var(--ink-line); color: var(--on-ink-dim); background: transparent;
+  font-family: var(--f-label); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+}
+.film__toggle:hover { color: var(--ink); background: var(--gold); border-color: var(--gold); }
+.lightbox__img { width: 100%; height: 100%; object-fit: contain; display: block; }
+@keyframes film-roll { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes reel-spin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) {
+  .film { padding-top: 24px; }
+  .film__track { padding: 24px 0; }
+  .film__track::before { top: 6px; } .film__track::after { bottom: 6px; }
+  .film__frame { height: 150px; }
+  .film__reel { top: calc(24px + 99px); width: 220px; height: 220px; margin-top: -110px; }
+  .film__reel--left { left: -150px; } .film__reel--right { right: -150px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .film__track, .film__reel { animation: none; }
+  .film__view { overflow-x: auto; }
+  .film__toggle { display: none; }
+}
