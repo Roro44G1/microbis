@@ -19,7 +19,7 @@
   <url><loc>https://microbis.ro/spectacole/curtea-miracolelor.html</loc><priority>0.6</priority></url>
   <url><loc>https://microbis.ro/spectacole/clipe-de-luciditate-1997.html</loc><priority>0.6</priority></url>
   <url><loc>https://microbis.ro/membri.html</loc><priority>0.7</priority></url>
-  <url><loc>https://microbis.ro/calendar.html</loc><priority>0.8</priority></url>
+  <!-- ascuns temporar: <url><loc>https://microbis.ro/calendar.html</loc><priority>0.8</priority></url> -->
   <url><loc>https://microbis.ro/presa.html</loc><priority>0.6</priority></url>
   <url><loc>https://microbis.ro/auditii.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/contact.html</loc><priority>0.6</priority></url>
@@ -42,7 +42,7 @@
   <url><loc>https://microbis.ro/en/spectacole/curtea-miracolelor.html</loc><priority>0.6</priority></url>
   <url><loc>https://microbis.ro/en/spectacole/clipe-de-luciditate-1997.html</loc><priority>0.6</priority></url>
   <url><loc>https://microbis.ro/en/membri.html</loc><priority>0.7</priority></url>
-  <url><loc>https://microbis.ro/en/calendar.html</loc><priority>0.8</priority></url>
+  <!-- ascuns temporar: <url><loc>https://microbis.ro/en/calendar.html</loc><priority>0.8</priority></url> -->
   <url><loc>https://microbis.ro/en/presa.html</loc><priority>0.6</priority></url>
   <url><loc>https://microbis.ro/en/auditii.html</loc><priority>0.8</priority></url>
   <url><loc>https://microbis.ro/en/contact.html</loc><priority>0.6</priority></url>

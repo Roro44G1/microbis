@@ -63,7 +63,8 @@
     { key: 'despre',     href: 'index.html#despre' },
     { key: 'spectacole', href: 'spectacole/index.html' },
     { key: 'membri',     href: 'membri.html' },
-    { key: 'calendar',   href: 'calendar.html' },
+    // Calendar ascuns temporar (pagina rămâne în site, dar fără link). Pentru reactivare, scoateți // de pe rândul de mai jos.
+    // { key: 'calendar',   href: 'calendar.html' },
     { key: 'presa',      href: 'presa.html' },
     { key: 'contact',    href: 'contact.html' }
   ];
@@ -156,7 +157,7 @@
             '<li><a href="' + pfx + 'membri.html">' + t.nav.membri + '</a></li>' +
           '</ul></div>' +
           '<div class="footer-col"><h4>' + t.colInv + '</h4><ul>' +
-            '<li><a href="' + pfx + 'calendar.html">' + t.calendar + '</a></li>' +
+            /* Calendar ascuns temporar: '<li><a href="' + pfx + 'calendar.html">' + t.calendar + '</a></li>' + */
             '<li><a href="' + pfx + 'auditii.html">' + t.auditii + '</a></li>' +
             '<li><a href="' + pfx + 'presa.html">' + t.presa + '</a></li>' +
             '<li><a href="' + pfx + 'contact.html">' + t.contact + '</a></li>' +
