@@ -578,7 +578,7 @@ section { position: relative; }
 .stat-strip.stat-strip--3 { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 720px) { .stat-strip.stat-strip--3 { grid-template-columns: 1fr; } }
 /* ancorele de pe Acasă (#despre, #hugo-wolff) nu se ascund sub header-ul fix */
-section[id] { scroll-margin-top: 90px; }
+section[id], .anchor { scroll-margin-top: 90px; }
 
 /* pagina Membri — lista alfabetică (după nume), grupată pe litera numelui */
 .members-index { columns: 4 220px; column-gap: 40px; }
