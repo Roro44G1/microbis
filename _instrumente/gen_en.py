@@ -115,9 +115,7 @@ def page(i, s, nxt):
           f'        <div class="ph-photo__mark"><div class="ph-photo__label">Performance excerpt</div><div class="ph-photo__sub">{html.escape(pt) + " · " + s["year"] if has else "Video coming soon"}</div></div>',
           '        <div class="ph-video__play"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>', '      </div>',
           '', '      <h2 class="h-md mt-xl mb-l" data-reveal>From the performance</h2>',
-          f'      <div class="prod-gallery-wrap" data-gallery data-gallery-folder="{IMG}{fo}/" data-gallery-files="{",".join(photos)}" data-reveal>',
-          '        <button class="prod-gallery-arrow prev" aria-label="Previous">‹</button>', '        <div class="prod-gallery-track"></div>',
-          '        <button class="prod-gallery-arrow next" aria-label="Next">›</button>', '      </div>', '    </div>', '  </section>', '',
+          f'      <div data-film="{fo}" data-film-count="{len(photos)}" data-reveal></div>', '    </div>', '  </section>', '',
           '  <section class="section theme-paper alt cta-band">', '    <div class="container">']
     if nxt:
         o += ['      <p class="eyebrow eyebrow--red justify-center">Next performance</p>', f'      <h2 class="h-lg mt-16 mb-26">{nxt["title"]}</h2>', f'      <a href="{nxt["slug"]}.html" class="btn btn-primary btn-arrow">See the performance</a>']

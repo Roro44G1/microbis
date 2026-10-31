@@ -27,7 +27,7 @@ microbis-site/
 │        NU se publică — se mută înainte de urcarea site-ului pe server)
 └── assets/
     ├── css/style.css             Tot sistemul de design (un singur fișier)
-    ├── js/main.js                 Navigație mobilă, lightbox, galerie, formulare
+    ├── js/main.js                 Navigație mobilă, lightbox, galeria-peliculă, formulare
     ├── js/partials.js             Header, meniu, footer — sursă unică (vezi mai jos)
     └── img/
         ├── logo.png               Logo-ul real, transparent (vezi §2.1)
@@ -95,6 +95,20 @@ Rămâne opțional: `assets/img/favicon.svg` e încă simbolul geometric simplu 
 Un singur atribut adăugat, nimic șters. Fără `data-img`, caseta rămâne exact placeholder-ul de-acum.
 
 Vezi §3 pentru dimensiunile recomandate și pipeline-ul de optimizare — brief-ul cere explicit un site rapid, cu galerie indexabilă și originale grele ținute separat, nu încărcate direct.
+
+### 2.2b Galeria foto „peliculă de film” — o singură linie per pagină
+
+Toate galeriile foto (cele 16 pagini de spectacol, RO și EN, plus „Margot” pe Acasă) folosesc același script din `assets/js/main.js`. Pe pagină se scrie o singură linie, cu doar două date — **folderul** și **numărul de fotografii**:
+
+```html
+<div data-film="2009_regina_margot" data-film-count="20" data-reveal></div>
+```
+
+- `data-film` — numele folderului din `spectacole/` (fără cale; aceeași linie merge și pe paginile EN, și pe Acasă — calea se calculează automat).
+- `data-film-count` — câte poze are galeria. Cu `0`, pelicula arată cadre goale „[ de completat ]”.
+- Pozele trebuie numite după regula folderului: `spectacole/2009_regina_margot/2009_regina_margot_01.jpg`, `_02.jpg` … (două cifre, `.jpg`).
+
+Pentru a adăuga poze unui spectacol: le copiați în folder cu numerele următoare și măriți `data-film-count` pe pagina RO și pe cea EN. Pelicula rulează singură între două role, se oprește la hover sau din butonul de sub ea, iar click pe un cadru deschide fotografia mărită.
 
 ### 2.3 Video
 

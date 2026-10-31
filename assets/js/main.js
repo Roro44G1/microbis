@@ -62,131 +62,24 @@
     el.appendChild(img);
   });
 
-  /* -- galerie foto spectacol: carusel infinit, centrat -----------------
-     Markup așteptat pe pagina unui spectacol:
-       <div class="prod-gallery-wrap" data-gallery
-            data-gallery-folder="img/" data-gallery-files="">
-         <button class="prod-gallery-arrow prev" aria-label="Anterior">‹</button>
-         <div class="prod-gallery-track"></div>
-         <button class="prod-gallery-arrow next" aria-label="Următor">›</button>
-       </div>
-     Ca să apară poze reale: puneți fișierele în folderul spectacolului
-     (implicit subfolderul "img/" de lângă pagina .html) și listați
-     numele lor, separate prin virgulă, în data-gallery-files — ex:
-       data-gallery-files="01.jpg,02.jpg,03.jpg"
-     Fără nicio listă, caseta arată automat câteva poziții placeholder,
-     la fel ca restul site-ului (vezi data-gallery-placeholders, implicit
-     6). Detaliu tehnic pentru README: vezi §2.3. */
-  document.querySelectorAll('[data-gallery]').forEach(function (wrap) {
-    var track = wrap.querySelector('.prod-gallery-track');
-    if (!track) return;
-    var folder = wrap.getAttribute('data-gallery-folder') || 'img/';
-    var filesAttr = (wrap.getAttribute('data-gallery-files') || '').trim();
-    var files = filesAttr
-      ? filesAttr.split(',').map(function (s) { return s.trim(); }).filter(Boolean)
-      : [];
-    var placeholderCount = parseInt(wrap.getAttribute('data-gallery-placeholders') || '6', 10);
-    var real = files.length > 0;
-    var count = real ? files.length : placeholderCount;
-    var baseCards = [];
-    for (var i = 0; i < count; i++) {
-      var card = document.createElement('div');
-      card.className = 'prod-gallery-card';
-      if (real) {
-        var img = document.createElement('img');
-        img.src = folder + files[i];
-        img.alt = '';
-        img.loading = 'lazy';
-        card.appendChild(img);
-      } else {
-        card.innerHTML = '<div class="ph-photo__mark"><span class="ring-decor"></span>'
-          + '<div class="ph-photo__label">' + T('Foto', 'Photo') + '</div><div class="ph-photo__sub">' + T('[ de completat ]', '[ to be added ]') + '</div></div>';
-      }
-      track.appendChild(card);
-      baseCards.push(card);
-    }
-    var n = baseCards.length;
-    if (n === 0) return;
-    if (n < 2) { baseCards[0].classList.add('active'); return; }
-
-    var clonesNeeded = Math.min(3, n);
-    for (var c = 0; c < clonesNeeded; c++) {
-      var after = baseCards[c % n].cloneNode(true);
-      after.setAttribute('aria-hidden', 'true');
-      track.appendChild(after);
-    }
-    for (var c2 = 0; c2 < clonesNeeded; c2++) {
-      var before = baseCards[n - 1 - (c2 % n)].cloneNode(true);
-      before.setAttribute('aria-hidden', 'true');
-      track.insertBefore(before, track.firstChild);
-    }
-
-    var allCards = Array.from(track.querySelectorAll('.prod-gallery-card'));
-    var idx = clonesNeeded;
-    var isAnimating = false;
-    var autoInterval = null;
-    var pauseTimeout = null;
-
-    function perView() {
-      if (window.innerWidth <= 550) return 1;
-      if (window.innerWidth <= 900) return 2;
-      return 3;
-    }
-    function cardPercent() {
-      var pv = perView();
-      return pv === 1 ? 100 : pv === 2 ? 50 : 33.333;
-    }
-    function goTo(newIdx, animate) {
-      idx = newIdx;
-      var pv = perView();
-      var center = (pv - 1) / 2;
-      var val = -(idx - center) * cardPercent();
-      track.style.transition = animate ? 'transform .6s cubic-bezier(.16,1,.3,1)' : 'none';
-      track.style.transform = 'translateX(' + val + '%)';
-      allCards.forEach(function (c) { c.classList.remove('active'); });
-      if (allCards[idx]) allCards[idx].classList.add('active');
-    }
-    track.addEventListener('transitionend', function () {
-      isAnimating = false;
-      if (idx >= clonesNeeded + n) goTo(idx - n, false);
-      else if (idx < clonesNeeded) goTo(idx + n, false);
-    });
-    function next(animate) { if (isAnimating) return; isAnimating = !!animate; goTo(idx + 1, animate); }
-    function prev(animate) { if (isAnimating) return; isAnimating = !!animate; goTo(idx - 1, animate); }
-    function startAuto() { stopAuto(); autoInterval = setInterval(function () { next(true); }, 4000); }
-    function stopAuto() { if (autoInterval) { clearInterval(autoInterval); autoInterval = null; } }
-    function pauseAutoTemporarily() {
-      stopAuto();
-      clearTimeout(pauseTimeout);
-      pauseTimeout = setTimeout(function () { startAuto(); pauseTimeout = null; }, 6000);
-    }
-    var prevBtn = wrap.querySelector('.prod-gallery-arrow.prev');
-    var nextBtn = wrap.querySelector('.prod-gallery-arrow.next');
-    prevBtn && prevBtn.addEventListener('click', function () { prev(true); pauseAutoTemporarily(); });
-    nextBtn && nextBtn.addEventListener('click', function () { next(true); pauseAutoTemporarily(); });
-    wrap.addEventListener('mouseenter', stopAuto);
-    wrap.addEventListener('mouseleave', function () { if (!pauseTimeout) startAuto(); });
-    var startX = 0;
-    track.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; stopAuto(); }, { passive: true });
-    track.addEventListener('touchend', function (e) {
-      var diff = e.changedTouches[0].clientX - startX;
-      if (diff > 40) prev(true); else if (diff < -40) next(true);
-      pauseAutoTemporarily();
-    });
-    window.addEventListener('resize', function () { goTo(idx, false); });
-    goTo(idx, false);
-    startAuto();
-  });
-
-  /* -- galerie tip ROLĂ DE FILM (folosită pentru „Margot” pe Acasă) -----
-     Markup:
-       <div class="film" data-film data-film-folder="spectacole/2026_margot/"
-            data-film-files="2026_margot_01.jpg,2026_margot_02.jpg,..."></div>
-     Scriptul construiește pelicula (perforații + cadre), cele două role
-     care se rotesc și butonul Pauză/Pornește. Pelicula rulează continuu,
-     se oprește la hover, iar click pe un cadru îl deschide mărit în
-     lightbox. Cu „reducere animații” activată în sistem, nu rulează
-     singură: se derulează manual, orizontal. */
+  /* -- GALERIA FOTO „PELICULĂ DE FILM” (toate spectacolele + Acasă) -------
+     Pe orice pagină, o singură linie, cu DOAR două date:
+       <div data-film="2009_regina_margot" data-film-count="20"></div>
+         data-film        = numele folderului din spectacole/
+         data-film-count  = câte fotografii are galeria
+     Pozele trebuie numite după regula folderului:
+       spectacole/2009_regina_margot/2009_regina_margot_01.jpg … _20.jpg
+     Calea spre spectacole/ e calculată automat (aceeași linie merge și
+     în paginile RO, și în cele EN, și pe Acasă). Cu data-film-count="0"
+     pelicula arată cadre goale „[ de completat ]”.
+     Comportament: rulează continuu între două role care se rotesc, se
+     oprește la hover sau din buton, click pe cadru = foto mărită. Cu
+     „reducere animații” activată în sistem, nu rulează singură. */
+  var SITE_ROOT = (function () {
+    var tag = document.querySelector('script[src$="assets/js/main.js"]');
+    return tag ? tag.getAttribute('src').replace(/assets\/js\/main\.js$/, '') : '';
+  })();
+  function pad2(n) { return n < 10 ? '0' + n : String(n); }
   var REEL_SVG = '<svg viewBox="0 0 200 200" aria-hidden="true">'
     + '<circle cx="100" cy="100" r="96" class="reel__flange"/>'
     + '<circle cx="100" cy="100" r="62" class="reel__wound"/>'
@@ -198,46 +91,62 @@
     + '<circle cx="100" cy="100" r="20" class="reel__hub"/>'
     + '<circle cx="100" cy="100" r="7" class="reel__axle"/>'
     + '</svg>';
+  function openPhoto(src) {
+    var lb = document.getElementById('lightbox');
+    if (!lb) return false;
+    var inner = lb.querySelector('.lightbox__inner');
+    inner.innerHTML = '';
+    var big = document.createElement('img');
+    big.className = 'lightbox__img';
+    big.src = src;
+    big.alt = '';
+    inner.appendChild(big);
+    lb.classList.add('open');
+    document.documentElement.style.overflow = 'hidden';
+    return true;
+  }
   document.querySelectorAll('[data-film]').forEach(function (wrap) {
-    var folder = wrap.getAttribute('data-film-folder') || '';
-    var files = (wrap.getAttribute('data-film-files') || '').split(',')
-      .map(function (s) { return s.trim(); }).filter(Boolean);
-    if (!files.length) return;
+    var name = (wrap.getAttribute('data-film') || '').trim().replace(/\/+$/, '');
+    var count = parseInt(wrap.getAttribute('data-film-count') || '0', 10) || 0;
+    if (!name) return;
+    var folder = SITE_ROOT + 'spectacole/' + name + '/';
+    var real = count > 0;
+    var frames = real ? count : 6;
+    /* cu puține poze, setul se repetă (min. 8 cadre), ca pelicula să nu aibă goluri pe ecrane late */
+    var reps = Math.max(1, Math.ceil(8 / frames));
+    wrap.classList.add('film');
     var view = document.createElement('div');
     view.className = 'film__view';
     var track = document.createElement('div');
     track.className = 'film__track';
-    for (var copy = 0; copy < 2; copy++) {
-      files.forEach(function (f, i) {
-        var a = document.createElement('a');
-        a.className = 'film__frame';
-        a.href = folder + f;
-        if (copy) { a.setAttribute('aria-hidden', 'true'); a.tabIndex = -1; }
-        else { a.setAttribute('aria-label', T('Mărește fotografia ', 'Enlarge photo ') + (i + 1)); }
-        var img = document.createElement('img');
-        img.src = folder + f;
-        img.alt = '';
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        a.appendChild(img);
-        a.addEventListener('click', function (e) {
-          var lb = document.getElementById('lightbox');
-          if (!lb) return;
-          e.preventDefault();
-          var inner = lb.querySelector('.lightbox__inner');
-          inner.innerHTML = '';
-          var big = document.createElement('img');
-          big.className = 'lightbox__img';
-          big.src = folder + f;
-          big.alt = '';
-          inner.appendChild(big);
-          lb.classList.add('open');
-          document.documentElement.style.overflow = 'hidden';
-        });
-        track.appendChild(a);
-      });
+    for (var copy = 0; copy < 2 * reps; copy++) {
+      for (var i = 1; i <= frames; i++) {
+        var frame;
+        if (real) {
+          var src = folder + name + '_' + pad2(i) + '.jpg';
+          frame = document.createElement('a');
+          frame.className = 'film__frame';
+          frame.href = src;
+          var img = document.createElement('img');
+          img.src = src;
+          img.alt = '';
+          img.loading = 'lazy';
+          img.decoding = 'async';
+          frame.appendChild(img);
+          frame.addEventListener('click', function (e) {
+            if (openPhoto(this.getAttribute('href'))) e.preventDefault();
+          });
+          if (!copy) frame.setAttribute('aria-label', T('Mărește fotografia ', 'Enlarge photo ') + i);
+        } else {
+          frame = document.createElement('div');
+          frame.className = 'film__frame film__frame--empty';
+          frame.innerHTML = '<span>' + T('Foto', 'Photo') + '</span><small>' + T('[ de completat ]', '[ to be added ]') + '</small>';
+        }
+        if (copy) { frame.setAttribute('aria-hidden', 'true'); frame.tabIndex = -1; }
+        track.appendChild(frame);
+      }
     }
-    track.style.setProperty('--film-dur', (files.length * 5) + 's');
+    track.style.setProperty('--film-dur', (frames * reps * 5) + 's');
     view.appendChild(track);
     wrap.appendChild(view);
     ['film__reel film__reel--left', 'film__reel film__reel--right'].forEach(function (cls) {

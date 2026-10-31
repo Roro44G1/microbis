@@ -295,43 +295,6 @@ section { position: relative; }
 .ph-video:hover .ph-video__play svg { fill: #fff; }
 .ph-video__play svg { fill: var(--ink); margin-left: 4px; }
 
-/* -- galerie foto spectacol: carusel -------------------------------------
-   Înlocuiește grila statică de 3 poze. Vezi assets/js/main.js pentru
-   logica de construire/derulare — un singur atribut (data-gallery-files)
-   controlează dacă apar poze reale sau poziții placeholder. */
-.prod-gallery-wrap { position: relative; padding: 0 52px; overflow: hidden; }
-.prod-gallery-track { display: flex; will-change: transform; }
-.prod-gallery-card {
-  flex: 0 0 calc(33.333% - 16px); margin: 0 8px;
-  aspect-ratio: 3/4; border-radius: var(--radius-m); overflow: hidden;
-  position: relative; display: flex; align-items: center; justify-content: center;
-  background: linear-gradient(155deg, #2b1f2c 0%, #3a1f24 45%, #150f16 100%);
-  opacity: .45; transform: scale(.88); filter: brightness(.65);
-  transition: opacity .6s var(--ease), transform .6s var(--ease), filter .6s var(--ease);
-}
-.prod-gallery-card.active { opacity: 1; transform: scale(1.04); filter: brightness(1); z-index: 2; }
-.prod-gallery-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.prod-gallery-arrow {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(246,241,232,.08); border: 1px solid rgba(246,241,232,.16);
-  color: var(--on-ink-dim); font-size: 1.2rem; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .2s; z-index: 5;
-}
-.prod-gallery-arrow:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
-.prod-gallery-arrow.prev { left: 0; }
-.prod-gallery-arrow.next { right: 0; }
-@media (max-width: 900px) {
-  .prod-gallery-card { flex: 0 0 calc(50% - 16px); }
-  .prod-gallery-wrap { padding: 0 40px; }
-}
-@media (max-width: 550px) {
-  .prod-gallery-card { flex: 0 0 calc(100% - 16px); }
-  .prod-gallery-wrap { padding: 0 36px; }
-  .prod-gallery-arrow { width: 36px; height: 36px; font-size: 1rem; }
-}
-
 /* -- carduri -- */
 .card {
   border-radius: var(--radius-m); overflow: hidden;
@@ -635,7 +598,7 @@ img, video, iframe { max-width: 100%; }
   .nav__links { inset: 76px 0 auto 0; height: calc(100vh - 76px); height: calc(100dvh - 76px); overflow-y: auto; }
 }
 
-/* ---- galerie tip ROLĂ DE FILM (Margot, pe Acasă) — logica în main.js ---- */
+/* ---- galeria foto „PELICULĂ DE FILM” (toate spectacolele + Acasă) — logica în main.js ---- */
 .film { position: relative; overflow: hidden; padding: 40px 0 0; }
 .film__view { position: relative; overflow: hidden; }
 .film__track {
@@ -654,6 +617,10 @@ img, video, iframe { max-width: 100%; }
 .film__frame img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92) contrast(1.05); transition: transform .5s ease, filter .5s ease; }
 .film__frame:hover img, .film__frame:focus-visible img { transform: scale(1.06); filter: saturate(1) contrast(1.05); }
 .film__frame:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.film__frame--empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  background: linear-gradient(155deg, #2b1f2c 0%, #3a1f24 45%, #150f16 100%); color: var(--on-ink-dim);
+  font-family: var(--f-label); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; }
+.film__frame--empty small { font-size: .7rem; color: var(--on-ink-faint); text-transform: none; letter-spacing: .04em; }
 .film__reel {
   position: absolute; top: calc(40px + 135px); width: 340px; height: 340px; margin-top: -170px;
   z-index: 2; pointer-events: none; filter: drop-shadow(0 12px 28px rgba(0, 0, 0, .65));
