@@ -13,3 +13,7 @@ _verificare_tmp.tar
 Thumbs.db
 desktop.ini
 *.doc
+
+# instrumente: fișiere de lucru
+__pycache__/
+_instrumente/presa_noi.json
