@@ -11,6 +11,9 @@ Comenzi (din orice folder):
 
   python3 presa_din_ccss.py init
         O singură dată: citește fișele din presa.html actual și scrie presa_fise.json.
+  python3 presa_din_ccss.py descarca DOSAR
+        Salvează datele CCSS în DOSAR (pagina.html + rest.json), cu reîncercări la anti-bot;
+        se dau apoi la „noi” cu --sursa (o singură descărcare pentru ambele site-uri).
   python3 presa_din_ccss.py noi [--sursa pagina.html --sursa rest.json]
         Descarcă datele CCSS (JSON-ul pr-data din pagină + articolele din categoria 114)
         sau le ia din fișiere salvate, aplică filtrul de cuvinte-cheie
@@ -203,6 +206,38 @@ def date_ccss(surse=()):
     return unice
 
 
+def descarca(dosar):
+    """Salvează datele CCSS (pagina „CCSS în presă” + categoria 114) în `dosar`,
+    cu reîncercări când site-ul răspunde cu pagina anti-bot."""
+    d = Path(dosar)
+    d.mkdir(parents=True, exist_ok=True)
+
+    def cu_reincercari(url, e_bun):
+        for _ in range(6):
+            try:
+                text = _get(url)
+                if e_bun(text):
+                    return text
+                print("  răspuns anti-bot, reîncerc peste 30 s…")
+            except Exception as e:
+                print(f"  eroare {type(e).__name__}, reîncerc peste 30 s…")
+            time.sleep(30)
+        sys.exit(f"Nu am putut citi {url} după 6 încercări.")
+
+    pagina = cu_reincercari(URL_CCSS, lambda t: 'class="pr-data"' in t)
+    (d / "pagina.html").write_text(pagina, encoding="utf-8")
+    rest, nr = [], 1
+    while True:
+        time.sleep(20)  # site-ul CCSS răspunde cu anti-bot la cereri dese
+        lot = json.loads(cu_reincercari(URL_REST.format(nr), lambda t: t.lstrip().startswith("[")))
+        rest += lot
+        if len(lot) < 100:
+            break
+        nr += 1
+    (d / "rest.json").write_text(json.dumps(rest, ensure_ascii=False), encoding="utf-8")
+    print(f"Salvat în {d}: pagina.html ({len(_din_pagina(pagina))} fișe) + rest.json ({len(rest)} articole)")
+
+
 def fisa_din_ccss(x):
     """Transformă o fișă din JSON-ul CCSS (d,p,a,t,u,i,y,tp,s) în formatul paginii."""
     pub_scurt = x["p"].split(" · ")[0].split(" (")[0]
@@ -324,6 +359,8 @@ def main():
     cmd = a[0] if a else ""
     if cmd == "init":
         init()
+    elif cmd == "descarca" and len(a) > 1:
+        descarca(a[1])
     elif cmd == "noi":
         noi([a[i + 1] for i, v in enumerate(a) if v == "--sursa"])
     elif cmd == "aplica":

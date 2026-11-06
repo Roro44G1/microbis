@@ -16,7 +16,8 @@ Căile din scripturi presupun site-ul în `~/mnt/microbis` (mediul de lucru Clau
 
 ## Pagina de presă (`presa.html`, `en/presa.html`) — actualizare din dosarul CCSS
 
-Pagina se actualizează direct din dosarul de presă CCSS (https://casastudentilorsibiu.ro/noutati/ccss-in-presa/),
+Actualizarea rulează automat săptămânal, ca sarcină programată Claude (o singură sarcină pentru microbis.ro
+și ansamblulardealul.ro). Pagina se actualizează direct din dosarul de presă CCSS (https://casastudentilorsibiu.ro/noutati/ccss-in-presa/),
 fără export PDF. Scriptul: `presa_din_ccss.py` (folosește regulile și HTML-ul din `presa_din_pdf.py`).
 
 - `presa_fise.json` — sursa de adevăr: toate fișele din pagină. Fișele existente nu se rescriu.
@@ -26,6 +27,8 @@ fără export PDF. Scriptul: `presa_din_ccss.py` (folosește regulile și HTML-u
 Pași, din rădăcina depozitului:
 
 1. `python3 _instrumente/presa_din_ccss.py noi` — fișele noi → `presa_noi.json` (afișează și lista „de verificat”).
+   Sau, cu o singură descărcare pentru ambele site-uri: `descarca /tmp/ccss`, apoi
+   `noi --sursa /tmp/ccss/pagina.html --sursa /tmp/ccss/rest.json`.
 2. Pentru fiecare fișă nouă se adaugă traducerea în `presa_en.json` (cheia = linkul; `titlu`, `rezumat`, opțional `subiect`).
 3. `python3 _instrumente/presa_din_ccss.py aplica` — adaugă fișele și regenerează ambele pagini.
 4. Commit + push. Workflow-ul `.github/workflows/presa-imagini.yml` descarcă imaginile lipsă
