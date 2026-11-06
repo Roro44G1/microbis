@@ -13,7 +13,10 @@ Ce face, în ordine:
   2. păstrează doar fișele care conțin cel puțin unul dintre cuvintele-cheie de mai jos;
   3. elimină dublurile: același titlu + aceeași publicație + aceeași zi;
   4. salvează imaginile în assets/img/presa/;
-  5. scrie presa.html (înlocuiește complet pagina veche).
+  5. scrie presa.html și en/presa.html (înlocuiesc complet paginile vechi) și, în assets/css/presa.css,
+     înălțimile barelor graficului pe ani (între marcajele GENERAT).
+     Versiunea engleză ia titlurile și rezumatele traduse din presa_en.json (cheia = linkul articolului);
+     linkurile rămân către articolele originale, în română. Un articol nou fără traducere oprește scriptul.
 
 Stilurile sunt în assets/css/presa.css. Acest script NU trebuie urcat pe serverul web.
 Necesită:  pip install pdfplumber
@@ -51,9 +54,11 @@ CUVINTE_CHEIE = re.compile(
 SUBIECTE_ACCEPTATE = re.compile(r"microbis|hugo[\s\-]*wolff|festivalul\s+studentesc\s+de\s+dans")
 
 SITE = Path(__file__).resolve().parent.parent  # rădăcina site-ului
-PAGINA = SITE / "presa.html"
 FOLDER_IMG = SITE / "assets" / "img" / "presa"
 CALE_IMG = "assets/img/presa"  # cum apar imaginile în HTML
+CSS = SITE / "assets" / "css" / "presa.css"
+CSS_START = "/* ===== GENERAT de presa_din_pdf.py — nu edita între marcaje ===== */"
+CSS_END = "/* ===== SFÂRȘIT GENERAT ===== */"
 
 # --------------------------------------------------------------------------
 # 1. CITIREA PDF-ULUI
@@ -241,58 +246,198 @@ def nume_publicatie(f, nume_cunoscute):
     )
 
 
-def card_html(f, nume):
+# --------------------------------------------------------------------------
+# 5. LIMBILE (RO = presa.html, EN = en/presa.html)
+# --------------------------------------------------------------------------
+
+# Traducerile cardurilor (titlu + rezumat) stau în presa_en.json, cu cheia = linkul articolului.
+# Linkul rămâne mereu cel către articolul original, în română.
+JSON_EN = Path(__file__).resolve().parent / "presa_en.json"
+
+LuniEN = ["January", "February", "March", "April", "May", "June", "July",
+           "August", "September", "October", "November", "December"]
+
+SUBIECTE_EN = {
+    "Festivalul de Dans „Hugo Wolff”": "Hugo Wolff Dance Festival",
+    "Microbis · Hugo Wolff": "Microbis · Hugo Wolff",
+    "Festivalul studențesc de dans": "Student Dance Festival",
+    "Premii și distincții": "Awards and distinctions",
+}
+
+LIMBI = {
+    "ro": {
+        "fisier": SITE / "presa.html",
+        "pfx": "",
+        "pfx_site": "",
+        "titlu_pagina": "MICROBIS în presă — Microbis",
+        "descriere": "Apariții în presă despre Compania de Teatru-Dans Microbis și Festivalul de Dans „Hugo Wolff”, {an_min}–{an_max}: {numar} articole, cu link către sursa originală.",
+        "cuvinte_cheie": "Microbis presă, Microbis în presă, Festivalul de Dans Hugo Wolff, teatru dans Sibiu",
+        "og_descriere": "Ce s-a scris în presă despre Microbis și Festivalul de Dans „Hugo Wolff”.",
+        "og_locale": "",
+        "eticheta": "Presă",
+        "h1": "MICROBIS în presă",
+        "lead": "{numar} apariții în presă · {an_min}–{an_max}",
+        "grafic_aria": "Apariții în presă pe ani",
+        "stare_toate": "{numar} articole. Alege un an din grafic ca să le filtrezi.",
+        "stare_an": "Se afișează {numar} din {an}.",
+        "reset": "Arată toate",
+        "nota": ("Selecție din dosarul de presă al Casei de Cultură a Studenților Sibiu, actualizat la {generat}. "
+                 "Imaginile și textele integrale aparțin publicațiilor citate. Fiecare fișă trimite la articolul original."),
+        "subiect": "Subiect:",
+        "cta": "Citește articolul în {nume} »",
+    },
+    "en": {
+        "fisier": SITE / "en" / "presa.html",
+        "pfx": "../",
+        "pfx_site": "",
+        "titlu_pagina": "MICROBIS in the press — Microbis",
+        "descriere": "Press coverage of the Microbis Theatre-Dance Company and the Hugo Wolff Dance Festival, {an_min}–{an_max}: {numar} articles, each linking to the original source.",
+        "cuvinte_cheie": "Microbis press, Microbis in the press, Hugo Wolff Dance Festival, theatre dance Sibiu",
+        "og_descriere": "What the press has written about Microbis and the Hugo Wolff Dance Festival.",
+        "og_locale": '<meta property="og:locale" content="en_GB">\n',
+        "eticheta": "Press",
+        "h1": "MICROBIS in the press",
+        "lead": "{numar} press appearances · {an_min}–{an_max}",
+        "grafic_aria": "Press appearances by year",
+        "stare_toate": "{numar} articles. Pick a year in the chart to filter them.",
+        "stare_an": "Showing {numar} from {an}.",
+        "reset": "Show all",
+        "nota": ("Selection from the press archive of the Sibiu Student Cultural Centre (CCS Sibiu), updated on {generat}. "
+                 "Images and full texts belong to the publications cited. Each card links to the original article, "
+                 "which opens in Romanian; the titles and summaries here are translated."),
+        "subiect": "Subject:",
+        "cta": "Read the article in {nume} »",
+    },
+}
+
+
+def numar_articole(n, limba):
+    """„1 articol”, „12 articole”, „23 de articole” / „1 article”, „12 articles”."""
+    if limba == "en":
+        return f"{n} article" + ("" if n == 1 else "s")
+    if n == 1:
+        return "1 articol"
+    return f"{n} {cu_de(n)}articole"
+
+
+def data_en(iso):
+    a, l, z = iso.split("-")
+    return f"{int(z)} {LuniEN[int(l) - 1]} {a}"
+
+
+AUTOR_EN = {  # părțile „Autor: …” care nu sunt nume de persoane
+    "nesemnat": "unsigned",
+    "autor": "not stated",
+    "comunicat de presa": "Press release",
+    "eveniment": "Event",
+    "publicitate": "Advertising",
+    "redactie stiri": "News desk",
+    "redactia": "Editorial staff",
+}
+
+
+def autor_en(autor):
+    """„Autor: Redacția Alba24.ro · Comunicat de presă” → „Author: Alba24.ro editorial staff · Press release”."""
+    parti = []
+    for parte in autor.replace("Autor:", "").split("·"):
+        parte = parte.strip()
+        cheie_parte = fara_diacritice(parte).lower()
+        if cheie_parte in AUTOR_EN:
+            parte = AUTOR_EN[cheie_parte]
+        elif re.match(r"redacti[ae]\s+\S", cheie_parte):
+            parte = re.sub(r"^\S+\s+", "", parte) + " editorial staff"
+        elif cheie_parte.startswith("comunicat "):
+            parte = parte.split(" ", 1)[1] + " press release"
+        if parte and parte not in parti:
+            parti.append(parte)
+    if any(p.endswith(" press release") for p in parti):
+        parti = [p for p in parti if p != "Press release"]  # „CCS Sibiu press release · Press release” → o singură dată
+    return "Author: " + (" · ".join(parti) if parti else "not stated")
+
+
+def traduceri_en(fise):
+    """Încarcă presa_en.json și verifică că fiecare fișă are traducere (altfel oprește scriptul)."""
+    import json
+
+    tr = json.loads(JSON_EN.read_text(encoding="utf-8"))
+    lipsa = [f["link"] for f in fise if f["link"] not in tr]
+    if lipsa:
+        sys.exit(f"Lipsesc traduceri în {JSON_EN.name} pentru {len(lipsa)} articole, de ex.:\n  " + "\n  ".join(lipsa[:5]))
+    return tr
+
+
+def card_html(f, nume, limba, tr):
     e = html.escape
+    t = LIMBI[limba]
     atribute_link = f'href="{e(f["link"])}" target="_blank" rel="noopener noreferrer"'
+    pfx = t["pfx"]
+
+    if limba == "en":
+        titlu, rezumat = tr[f["link"]]["titlu"], tr[f["link"]]["rezumat"]
+        data = data_en(f["iso"])
+        autor = autor_en(f["autor"])
+        subiect = SUBIECTE_EN.get(f["subiect"], f["subiect"])
+        eticheta_mica = SUBIECTE_EN_MARI.get(f["eticheta_mica"], f["eticheta_mica"])
+    else:
+        titlu, rezumat = f["titlu"], f["rezumat"]
+        data, autor, subiect, eticheta_mica = f["data"], f["autor"], f["subiect"], f["eticheta_mica"]
 
     if f["cale_img"]:
         media = f"""        <a class="presa-card__media" {atribute_link} tabindex="-1" aria-hidden="true">
-          <img src="{f['cale_img']}" alt="" width="400" height="250" loading="lazy">
+          <img src="{pfx}{f['cale_img']}" alt="" width="400" height="250" loading="lazy">
           <span class="presa-card__badge">{e(f['publicatie'])}</span>
         </a>"""
     else:
         media = f"""        <a class="presa-card__media presa-card__media--ph" {atribute_link} tabindex="-1" aria-hidden="true">
           <span class="presa-card__ph-name">{e(f['nume_mare'] or nume)}</span>
-          <span class="presa-card__ph-tag">{e(f['eticheta_mica'])}</span>
+          <span class="presa-card__ph-tag">{e(eticheta_mica)}</span>
         </a>"""
 
-    return f"""      <li class="presa-card">
+    return f"""      <li class="presa-card" data-an="{f['iso'][:4]}">
 {media}
         <div class="presa-card__body">
-          <p class="presa-card__meta"><time datetime="{f['iso']}">{f['data']}</time> · {e(f['autor'])}</p>
-          <h2 class="presa-card__title">{e(f['titlu'])}</h2>
-          <p class="presa-card__subject"><strong>Subiect:</strong> <span>{e(f['subiect'])}</span></p>
-          <p class="presa-card__text">{e(f['rezumat'])}</p>
-          <a class="presa-card__cta" {atribute_link}>Citește articolul în {e(nume)} »</a>
+          <p class="presa-card__meta"><time datetime="{f['iso']}">{data}</time> · {e(autor)}</p>
+          <h2 class="presa-card__title">{e(titlu)}</h2>
+          <p class="presa-card__subject"><strong>{t['subiect']}</strong> <span>{e(subiect)}</span></p>
+          <p class="presa-card__text">{e(rezumat)}</p>
+          <a class="presa-card__cta" {atribute_link}>{e(t['cta'].format(nume=nume))}</a>
         </div>
       </li>"""
 
 
+SUBIECTE_EN_MARI = {
+    "FESTIVALUL DE DANS „HUGO WOLFF”": "HUGO WOLFF DANCE FESTIVAL",
+    "MICROBIS · HUGO WOLFF": "MICROBIS · HUGO WOLFF",
+    "FESTIVALUL STUDENȚESC DE DANS": "STUDENT DANCE FESTIVAL",
+    "PREMII ȘI DISTINCȚII": "AWARDS AND DISTINCTIONS",
+}
+
+
 PAGINA_HTML = """<!doctype html>
-<html lang="ro">
+<html lang="{limba}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MICROBIS în presă — Microbis</title>
-<meta name="description" content="Apariții în presă despre Compania de Teatru-Dans Microbis și Festivalul de Dans „Hugo Wolff”, {an_min}–{an_max}: {numar} {de}articole, cu link către sursa originală.">
-<meta name="keywords" content="Microbis presă, Microbis în presă, Festivalul de Dans Hugo Wolff, teatru dans Sibiu">
-<link rel="canonical" href="https://microbis.ro/presa.html">
+<title>{t[titlu_pagina]}</title>
+<meta name="description" content="{descriere}">
+<meta name="keywords" content="{t[cuvinte_cheie]}">
+<link rel="canonical" href="{canonical}">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Microbis">
-<meta property="og:title" content="MICROBIS în presă — Microbis">
-<meta property="og:description" content="Ce s-a scris în presă despre Microbis și Festivalul de Dans „Hugo Wolff”.">
+{t[og_locale]}<meta property="og:site_name" content="Microbis">
+<meta property="og:title" content="{t[titlu_pagina]}">
+<meta property="og:description" content="{t[og_descriere]}">
 <meta property="og:image" content="https://microbis.ro/assets/img/og-cover.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="alternate" hreflang="ro" href="https://microbis.ro/presa.html">
 <link rel="alternate" hreflang="en" href="https://microbis.ro/en/presa.html">
 <link rel="alternate" hreflang="x-default" href="https://microbis.ro/presa.html">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{t[pfx]}assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,500;1,6..96,600;1,6..96,700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/presa.css">
-<script src="assets/js/partials.js"></script>
+<link rel="stylesheet" href="{t[pfx]}assets/css/style.css">
+<link rel="stylesheet" href="{t[pfx]}assets/css/presa.css">
+<script src="{t[pfx]}assets/js/partials.js"></script>
 </head>
 <body>
 
@@ -301,22 +446,34 @@ PAGINA_HTML = """<!doctype html>
 <main>
   <section class="theme-ink page-header presa-head">
     <div class="container">
-      <p class="eyebrow eyebrow--red">Presă</p>
-      <h1 class="h-lg mt-18">MICROBIS în presă</h1>
-      <p class="presa-lead">{numar} {de}apariții în presă · {an_min}–{an_max}</p>
+      <p class="eyebrow eyebrow--red">{t[eticheta]}</p>
+      <h1 class="h-lg mt-18">{t[h1]}</h1>
+      <p class="presa-lead">{lead}</p>
     </div>
   </section>
 
   <section class="section theme-ink presa">
     <div class="container">
 
+      <div class="presa-chart" role="group" aria-label="{t[grafic_aria]}">
+        <div class="presa-chart__scroll">
+          <div class="presa-chart__bars">
+{grafic}
+          </div>
+        </div>
+      </div>
+
+      <div class="presa-filter">
+        <p class="presa-filter__text" role="status" aria-live="polite" data-all="{stare_toate}">{stare_toate}</p>
+        <button type="button" class="presa-filter__reset" hidden>{t[reset]}</button>
+      </div>
+
       <ul class="presa-grid">
 {carduri}
       </ul>
 
       <p class="presa-note">
-        Selecție din dosarul de presă al Casei de Cultură a Studenților Sibiu, actualizat la {generat}.
-        Imaginile și textele integrale aparțin publicațiilor citate. Fiecare fișă trimite la articolul original.
+        {nota}
       </p>
 
     </div>
@@ -325,26 +482,83 @@ PAGINA_HTML = """<!doctype html>
 
 <script>document.write(microbisFooter(true));</script>
 
-<script src="assets/js/main.js"></script>
+<script src="{t[pfx]}assets/js/main.js"></script>
+<script src="{t[pfx]}assets/js/presa.js"></script>
 </body>
 </html>
 """
 
 
-def scrie_pagina(fise, nume_cunoscute, generat):
-    carduri = "\n\n".join(card_html(f, nume_publicatie(f, nume_cunoscute)) for f in fise)
+def cu_de(n):
+    """„de ” pentru numeralele românești de la 20 în sus (23 de articole), altfel nimic (12 articole)."""
+    return "de " if n % 100 >= 20 or n % 100 == 0 else ""
+
+
+def numara_pe_ani(fise):
+    """Câte articole sunt în fiecare an, de la cel mai vechi la cel mai nou (ani fără articole = 0)."""
     ani = [int(f["iso"][:4]) for f in fise]
-    PAGINA.write_text(
+    return collections.OrderedDict((an, ani.count(an)) for an in range(min(ani), max(ani) + 1))
+
+
+def grafic_html(pe_ani, limba):
+    """Barele graficului: câte un buton pe an. Înălțimea vine din clasa .presa-h-N (din presa.css)."""
+    t = LIMBI[limba]
+    bare = []
+    for an, n in pe_ani.items():
+        dezactivat = " disabled" if n == 0 else ""
+        eticheta = f"{an}: {numar_articole(n, limba)}"
+        mesaj = t["stare_an"].format(numar=numar_articole(n, limba), an=an)
+        bare.append(
+            f"""            <button type="button" class="presa-bar" data-an="{an}" data-msg="{mesaj}" aria-pressed="false"{dezactivat} aria-label="{eticheta}">
+              <span class="presa-bar__count">{n}</span>
+              <span class="presa-bar__col"><span class="presa-bar__fill presa-h-{n}"></span></span>
+              <span class="presa-bar__year">{an}</span>
+            </button>"""
+        )
+    return "\n".join(bare)
+
+
+def scrie_css_inaltimi(pe_ani):
+    """Scrie în presa.css clasele .presa-h-0 … .presa-h-N (înălțimea barelor, în % din cea mai înaltă)."""
+    maxim = max(pe_ani.values())
+    reguli = "\n".join(f".presa-h-{n} {{ height: {n * 100 / maxim:.1f}%; }}" for n in range(maxim + 1))
+    bloc = f"{CSS_START}\n{reguli}\n{CSS_END}"
+    css = CSS.read_text(encoding="utf-8")
+    if CSS_START in css:
+        css = re.sub(re.escape(CSS_START) + r".*?" + re.escape(CSS_END), lambda m: bloc, css, flags=re.S)
+    else:
+        css = css.rstrip() + "\n\n" + bloc + "\n"
+    CSS.write_text(css, encoding="utf-8")
+
+
+def scrie_pagina(fise, nume_cunoscute, generat, limba):
+    t = LIMBI[limba]
+    tr = traduceri_en(fise) if limba == "en" else None
+    carduri = "\n\n".join(card_html(f, nume_publicatie(f, nume_cunoscute), limba, tr) for f in fise)
+    pe_ani = numara_pe_ani(fise)
+    if limba == "ro":
+        scrie_css_inaltimi(pe_ani)  # aceeași înălțime în ambele limbi
+    n = len(fise)
+    cifre = {"an_min": min(pe_ani), "an_max": max(pe_ani), "generat": generat}
+    numar = f"{n} {cu_de(n)}".strip() if limba == "ro" else str(n)  # „142 de” / „142”
+    lead = t["lead"].format(numar=numar, **cifre)
+    stare = t["stare_toate"].format(numar=numar)
+    t["fisier"].parent.mkdir(parents=True, exist_ok=True)
+    t["fisier"].write_text(
         PAGINA_HTML.format(
+            limba=limba,
+            t=t,
+            descriere=t["descriere"].format(numar=numar, **cifre),
+            canonical="https://microbis.ro/presa.html" if limba == "ro" else "https://microbis.ro/en/presa.html",
+            lead=lead,
+            grafic=grafic_html(pe_ani, limba),
+            stare_toate=stare,
             carduri=carduri,
-            numar=len(fise),
-            de="de " if len(fise) % 100 >= 20 or len(fise) % 100 == 0 else "",  # 142 de apariții, 12 apariții
-            an_min=min(ani),
-            an_max=max(ani),
-            generat=generat,
+            nota=t["nota"].format(generat=generat),
         ),
         encoding="utf-8",
     )
+    return t["fisier"]
 
 
 # --------------------------------------------------------------------------
@@ -367,7 +581,7 @@ def main():
 
     alese, dubluri = alege(toate)
     nr_img = salveaza_imagini(alese)
-    scrie_pagina(alese, nume_cunoscute, generat)
+    pagini = [scrie_pagina(alese, nume_cunoscute, generat, limba) for limba in ("ro", "en")]
 
     print(f"Fișe în dosar:            {len(toate)}")
     print(f"Cu cuvintele-cheie:       {len(alese) + len(dubluri)}")
@@ -377,7 +591,8 @@ def main():
     print(f"Articole în pagină:       {len(alese)}  ({sum(1 for f in alese if f['cale_img'])} cu imagine, "
           f"{sum(1 for f in alese if not f['cale_img'])} fără)")
     print(f"Imagini salvate:          {nr_img}  → {FOLDER_IMG}")
-    print(f"Pagina scrisă:            {PAGINA}")
+    for pagina in pagini:
+        print(f"Pagina scrisă:            {pagina}")
 
 
 if __name__ == "__main__":

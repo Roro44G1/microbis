@@ -23,6 +23,148 @@
   padding-top: 0;
 }
 
+/* ---------- grafic pe ani + filtru ---------- */
+
+.presa-chart {
+  margin-bottom: 20px;
+  padding: 20px 16px 14px;
+  background: var(--ink-soft);
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-m);
+}
+
+.presa-chart__scroll {
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.presa-chart__bars {
+  display: flex;
+  gap: 6px;
+  min-width: 760px;
+}
+
+.presa-bar {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--on-ink-dim);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+.presa-bar:disabled {
+  cursor: default;
+  opacity: .45;
+}
+
+.presa-bar__count,
+.presa-bar__year {
+  font-family: var(--f-label);
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.2;
+  transition: color .2s var(--ease);
+}
+
+.presa-bar__col {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 150px;
+}
+
+.presa-bar__fill {
+  display: block;
+  width: 70%;
+  max-width: 30px;
+  min-height: 2px;
+  background: var(--red);
+  border-radius: 3px 3px 0 0;
+  transition: background .2s var(--ease), opacity .2s var(--ease);
+}
+
+.presa-bar:not(:disabled):hover .presa-bar__fill {
+  background: var(--gold);
+}
+
+.presa-bar:not(:disabled):hover .presa-bar__count,
+.presa-bar:not(:disabled):hover .presa-bar__year {
+  color: var(--on-ink);
+}
+
+/* după ce s-a ales un an, celelalte bare se estompează */
+
+.presa-chart.is-filtered .presa-bar[aria-pressed="false"] .presa-bar__fill {
+  opacity: .35;
+}
+
+.presa-bar[aria-pressed="true"] .presa-bar__fill {
+  background: var(--gold);
+}
+
+.presa-bar[aria-pressed="true"] .presa-bar__count,
+.presa-bar[aria-pressed="true"] .presa-bar__year {
+  color: var(--gold);
+}
+
+.presa-bar:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.presa-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.presa-filter__text {
+  font-size: .85rem;
+  color: var(--on-ink-dim);
+}
+
+.presa-filter__reset {
+  padding: 9px 16px;
+  background: none;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--gold);
+  font-family: var(--f-label);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s var(--ease), color .2s var(--ease);
+}
+
+.presa-filter__reset:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.presa-filter__reset:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.presa-filter__reset[hidden],
+.presa-card[hidden] {
+  display: none;
+}
+
 /* ---------- grila de carduri ---------- */
 
 .presa-grid {
@@ -203,3 +345,32 @@
   .presa-card { transition: none; }
   .presa-card:hover { transform: none; }
 }
+
+/* ===== GENERAT de presa_din_pdf.py — nu edita între marcaje ===== */
+.presa-h-0 { height: 0.0%; }
+.presa-h-1 { height: 4.0%; }
+.presa-h-2 { height: 8.0%; }
+.presa-h-3 { height: 12.0%; }
+.presa-h-4 { height: 16.0%; }
+.presa-h-5 { height: 20.0%; }
+.presa-h-6 { height: 24.0%; }
+.presa-h-7 { height: 28.0%; }
+.presa-h-8 { height: 32.0%; }
+.presa-h-9 { height: 36.0%; }
+.presa-h-10 { height: 40.0%; }
+.presa-h-11 { height: 44.0%; }
+.presa-h-12 { height: 48.0%; }
+.presa-h-13 { height: 52.0%; }
+.presa-h-14 { height: 56.0%; }
+.presa-h-15 { height: 60.0%; }
+.presa-h-16 { height: 64.0%; }
+.presa-h-17 { height: 68.0%; }
+.presa-h-18 { height: 72.0%; }
+.presa-h-19 { height: 76.0%; }
+.presa-h-20 { height: 80.0%; }
+.presa-h-21 { height: 84.0%; }
+.presa-h-22 { height: 88.0%; }
+.presa-h-23 { height: 92.0%; }
+.presa-h-24 { height: 96.0%; }
+.presa-h-25 { height: 100.0%; }
+/* ===== SFÂRȘIT GENERAT ===== */
