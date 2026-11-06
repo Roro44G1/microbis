@@ -1,0 +1,205 @@
+/* ==========================================================================
+   MICROBIS în presă — stiluri pentru presa.html
+   Fișier separat de style.css (nu atinge restul site-ului). Folosește
+   token-urile din style.css: --ink, --ink-soft, --ink-line, --red, --gold,
+   --on-ink, --on-ink-dim, --f-display, --f-label, --f-body, --radius-m,
+   --ease. Schimbi o culoare sau un font în style.css și se schimbă și aici.
+   ========================================================================== */
+
+/* ---------- antet de pagină ---------- */
+
+.presa-head {
+  padding-bottom: clamp(24px, 4vw, 40px);
+}
+
+.presa-lead {
+  margin-top: 12px;
+  font-family: var(--f-label);
+  font-size: .9rem;
+  color: var(--on-ink-dim);
+}
+
+.presa {
+  padding-top: 0;
+}
+
+/* ---------- grila de carduri ---------- */
+
+.presa-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.presa-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--ink-soft);
+  border: 1px solid var(--ink-line);
+  border-radius: var(--radius-m);
+  transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+
+.presa-card:hover {
+  border-color: rgba(226, 164, 58, .55);
+  transform: translateY(-4px);
+}
+
+/* imaginea + eticheta publicației */
+
+.presa-card__media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #0f0a10;
+  color: var(--on-ink);
+}
+
+.presa-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.presa-card__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 7px 12px;
+  background: var(--red);
+  color: #fff;
+  border-radius: 999px;
+  font-family: var(--f-label);
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* fișele fără imagine în dosar: numele publicației pe fundal închis */
+
+.presa-card__media--ph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 20px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 120%, rgba(214, 64, 44, .35), transparent 60%),
+    #0f0a10;
+}
+
+.presa-card__media--ph::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(226, 164, 58, .35);
+  border-radius: 50%;
+}
+
+.presa-card__ph-name {
+  position: relative;
+  font-family: var(--f-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.presa-card__ph-tag {
+  position: relative;
+  font-family: var(--f-label);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* textul cardului */
+
+.presa-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px 20px;
+}
+
+.presa-card__meta {
+  font-size: .78rem;
+  color: var(--on-ink-dim);
+}
+
+.presa-card__title {
+  font-family: var(--f-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.28;
+}
+
+.presa-card__subject {
+  font-size: .8rem;
+}
+
+.presa-card__subject span {
+  color: var(--gold);
+}
+
+.presa-card__text {
+  font-size: .9rem;
+  line-height: 1.6;
+  color: var(--on-ink-dim);
+}
+
+.presa-card__cta {
+  margin-top: auto;
+  padding-top: 14px;
+  font-family: var(--f-label);
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  transition: color .2s;
+}
+
+.presa-card__cta:hover {
+  color: var(--on-ink);
+}
+
+.presa-card__cta:focus-visible,
+.presa-card__media:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ---------- notă de subsol ---------- */
+
+.presa-note {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ink-line);
+  font-size: .8rem;
+  color: var(--on-ink-dim);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 980px) {
+  .presa-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 620px) {
+  .presa-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .presa-card { transition: none; }
+  .presa-card:hover { transform: none; }
+}
